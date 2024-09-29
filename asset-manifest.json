@@ -1,0 +1,27 @@
+{
+  "files": {
+    "main.css": "/static/css/main.198948de.css",
+    "main.js": "/static/js/main.e87bc3ae.js",
+    "reactPlayerPreview.js": "/static/js/reactPlayerPreview.341f2030.chunk.js",
+    "static/media/beretta.png": "/static/media/beretta.2f5de0734d9aaca0fd95.png",
+    "static/media/generiqueIco.png": "/static/media/generiqueIco.553021c4876f29899149.png",
+    "static/media/GalleryIco.png": "/static/media/GalleryIco.e7b1c189207bd0b7f85f.png",
+    "static/media/letterboxd-mac-icon.png": "/static/media/letterboxd-mac-icon.ed173120a56c19c2e346.png",
+    "static/media/error.wav": "/static/media/error.c8da1695dd177fc9e8ec.wav",
+    "static/media/narrator.ico": "/static/media/narrator.aeadcf16c506a1b17f3e.ico",
+    "static/media/restart.ico": "/static/media/restart.dc491046c84e4c14e552.ico",
+    "static/media/all-programs.ico": "/static/media/all-programs.bcaf5973986a068c6a92.ico",
+    "static/media/restore.ico": "/static/media/restore.13115734763eedd58881.ico",
+    "static/media/view-info.ico": "/static/media/view-info.5e4c445dd01928577a8f.ico",
+    "index.html": "/index.html",
+    "static/media/smile.svg": "/static/media/smile.45b54b9d335aea400da0859475daa434.svg",
+    "static/media/find.svg": "/static/media/find.303b87f499358979b1c66a3da1584e67.svg",
+    "main.198948de.css.map": "/static/css/main.198948de.css.map",
+    "main.e87bc3ae.js.map": "/static/js/main.e87bc3ae.js.map",
+    "reactPlayerPreview.341f2030.chunk.js.map": "/static/js/reactPlayerPreview.341f2030.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.198948de.css",
+    "static/js/main.e87bc3ae.js"
+  ]
+}
