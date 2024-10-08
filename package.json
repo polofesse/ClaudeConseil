@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "author": "ShizukuIchi <shizukuichi@gmail.com>",
-  "homepage": "https://claudeconseil.fr",
+  "homepage": "https://github.com/polofesse/winXP",
   "dependencies": {
     "lodash.samplesize": "^4.2.0",
     "react": "^16.8.6",
