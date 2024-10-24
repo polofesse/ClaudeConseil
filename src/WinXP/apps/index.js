@@ -26,7 +26,7 @@ import Générique from './Player2';
 import Prix_et_selections from './Noteprix';
 import Critiques from './Notecrit';
 import SolitaireGame from './Solitaire/Solitaire';
-import spiderico from 'assets/windowsIcons/spider.png';
+import spiderico from 'assets/windowsIcons/iconsolitaire.png';
 
 const gen = () => {
   let id = -1;
@@ -157,7 +157,7 @@ export const defaultAppState = [
 
 export const defaultIconState = [
   {
-    id: 0,
+    id: 11,
     icon: ie,
     title: 'Internet Explorer',
     component: InternetExplorer,
@@ -178,14 +178,14 @@ export const defaultIconState = [
     isFocus: false,
   },
   {
-    id: 3,
+    id: 0,
     icon: notepadLarge,
     title: 'Bienvenue!',
     component: Notepad,
     isFocus: false,
   },
   {
-    id: 4,
+    id: 3,
     icon: winamp,
     title: 'Chants Oiseaux',
     component: Winamp,
@@ -234,7 +234,7 @@ export const defaultIconState = [
     isFocus: false,
   },
   {
-    id: 11,
+    id: 4,
     icon: notepadLarge,
     title: 'Critiques',
     component: Critiques,
