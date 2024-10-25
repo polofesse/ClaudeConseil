@@ -5,10 +5,9 @@ import { WindowDropDowns } from 'components';
 import dropDownData from './dropDownData';
 
 export default function Notepad({ onClose }) {
-  const [docText, setDocText] = useState(
-    "Bienvenue sur le site du film\nLes Mystérieuses Aventures de Claude Conseil \nLe site est encore en construction, \net l'affichage est adapté à un ordinateur de bureau \nBonne visite!",
-  );
-  const [wordWrap, setWordWrap] = useState(false);
+  const [docText, setDocText] = useState('');
+  const [wordWrap, setWordWrap] = useState(true);
+
   useEffect(() => {
     fetch('/presentation.html')
       .then(response => response.text())
@@ -16,6 +15,7 @@ export default function Notepad({ onClose }) {
         setDocText(data);
       });
   }, []);
+
   function onClickOptionItem(item) {
     switch (item) {
       case 'Exit':
@@ -33,43 +33,33 @@ export default function Notepad({ onClose }) {
       default:
     }
   }
-  function onTextAreaKeyDown(e) {
-    // handle tabs in text area
-    if (e.which === 9) {
-      e.preventDefault();
-      e.persist();
-      var start = e.target.selectionStart;
-      var end = e.target.selectionEnd;
-      setDocText(`${docText.substring(0, start)}\t${docText.substring(end)}`);
 
-      // asynchronously update textarea selection to include tab
-      // workaround due to https://github.com/facebook/react/issues/14174
-      requestAnimationFrame(() => {
-        e.target.selectionStart = start + 1;
-        e.target.selectionEnd = start + 1;
-      });
-    }
-  }
+  // Fonction pour convertir le texte en HTML structuré
+  const renderText = text => {
+    return text.split('\n').map((line, index) => {
+      if (line.startsWith('# '))
+        return <h1 key={index}>{line.replace('# ', '')}</h1>;
+      if (line.startsWith('## '))
+        return <h2 key={index}>{line.replace('## ', '')}</h2>;
+      if (line.startsWith('### '))
+        return <h3 key={index}>{line.replace('### ', '')}</h3>;
+      return <p key={index}>{line}</p>;
+    });
+  };
 
   return (
     <Div>
       <section className="np__toolbar">
         <WindowDropDowns items={dropDownData} onClickItem={onClickOptionItem} />
       </section>
-      <StyledTextarea
-        wordWrap={wordWrap}
-        value={docText}
-        onChange={e => setDocText(e.target.value)}
-        onKeyDown={onTextAreaKeyDown}
-        spellCheck={false}
-      />
+      <StyledContent wordWrap={wordWrap}>{renderText(docText)}</StyledContent>
     </Div>
   );
 }
 
 const Div = styled.div`
   height: 100%;
-  background: linear-gradient(to right, #edede5 0%, #ede8cd 100%);
+  background: #fff;
   display: flex;
   flex-direction: column;
   align-items: stretch;
@@ -81,16 +71,37 @@ const Div = styled.div`
   }
 `;
 
-const StyledTextarea = styled.textarea`
+const StyledContent = styled.div`
   flex: auto;
-  outline: none;
+  padding: 10px;
+  overflow-y: scroll;
+  border: 1px solid #96abff;
+  background: #fff;
   font-family: 'Lucida Console', monospace;
   font-size: 13px;
   line-height: 14px;
-  resize: none;
-  padding: 2px;
-  ${props =>
-    props.wordWrap ? '' : 'white-space: pre-wrap; overflow-x: scroll;'}
-  overflow-y: scroll;
-  border: 1px solid #96abff;
+  white-space: pre-wrap;
+
+  h1 {
+    font-size: 1.5em;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+  }
+
+  h2 {
+    font-size: 1.25em;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+  }
+
+  h3 {
+    font-size: 1.1em;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+  }
+
+  p {
+    margin-top: 0.25em;
+    margin-bottom: 0.25em;
+  }
 `;

@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 function SubMenu({ className, data, style, onClick }) {
   const [hoverIndex, setHoverIndex] = useState(-1);
+
   return (
     <div style={{ ...style }} className={className}>
       {data.map((item, index) => (
@@ -24,15 +25,22 @@ const SubMenuItem = ({ index, item, className, hover, onHover, onClick }) => {
   function _onMouseOver() {
     onHover(index);
   }
+
+  function _onTouchStart() {
+    onHover(index);
+  }
+
   function _onClick() {
     onClick(item.text);
   }
+
   switch (item.type) {
     case 'item':
       return (
         <div
           onClick={_onClick}
           onMouseEnter={_onMouseOver}
+          onTouchStart={_onTouchStart}
           className={`${className}-item`}
         >
           <img className={`${className}-img`} src={item.icon} alt="" />
@@ -45,6 +53,7 @@ const SubMenuItem = ({ index, item, className, hover, onHover, onClick }) => {
       return (
         <div
           onMouseEnter={_onMouseOver}
+          onTouchStart={_onTouchStart}
           className={`${className}-item ${hover ? 'hover' : ''}`}
         >
           <img className={`${className}-img`} src={item.icon} alt="" />
@@ -72,7 +81,8 @@ const StyledSubMenu = styled(SubMenu)`
   bottom: ${({ bottom }) => bottom || '-1px'};
   background-color: white;
   padding-left: 1px;
-  box-shadow: inset 0 0 0 1px #72ade9, 2px 3px 3px rgb(0, 0, 0, 0.5);
+  box-shadow: inset 0 0 0 1px #72ade9, 2px 3px 3px rgba(0, 0, 0, 0.5);
+
   &-separator {
     padding: 0 5px;
     height: 2px;
@@ -84,6 +94,7 @@ const StyledSubMenu = styled(SubMenu)`
       rgba(0, 0, 0, 0) 100%
     );
   }
+
   &-item {
     height: 25px;
     display: flex;
@@ -94,10 +105,12 @@ const StyledSubMenu = styled(SubMenu)`
     padding-right: 22px;
     color: black;
   }
+
   &-item.hover {
     background-color: #1b65cc;
     color: white;
   }
+
   &-item:hover {
     background-color: #1b65cc;
     color: white;
@@ -105,19 +118,23 @@ const StyledSubMenu = styled(SubMenu)`
       border-left-color: #fff;
     }
   }
+
   &-item:hover,
   &-item.hover > &-arrow:before {
     border-left-color: #fff;
   }
+
   &-img {
     margin-right: 6px;
     width: 16px;
     height: 16px;
   }
+
   &-text {
     font-size: 11px;
     white-space: nowrap;
   }
+
   &-arrow {
     position: absolute;
     right: 0;

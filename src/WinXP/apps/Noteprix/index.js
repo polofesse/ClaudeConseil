@@ -9,6 +9,7 @@ export default function Prix_et_selections({ onClose }) {
     "Bienvenue sur le site du film\nLes Mystérieuses Aventures de Claude Conseil \nLe site est encore en construction, \net l'affichage est adapté à un ordinateur de bureau \nBonne visite!",
   );
   const [wordWrap, setWordWrap] = useState(false);
+
   useEffect(() => {
     fetch(process.env.PUBLIC_URL + '/selections.html')
       .then(response => response.text())
@@ -16,6 +17,7 @@ export default function Prix_et_selections({ onClose }) {
         setDocText(data);
       });
   }, []);
+
   function onClickOptionItem(item) {
     switch (item) {
       case 'Exit':
@@ -33,36 +35,26 @@ export default function Prix_et_selections({ onClose }) {
       default:
     }
   }
-  function onTextAreaKeyDown(e) {
-    // handle tabs in text area
-    if (e.which === 9) {
-      e.preventDefault();
-      e.persist();
-      var start = e.target.selectionStart;
-      var end = e.target.selectionEnd;
-      setDocText(`${docText.substring(0, start)}\t${docText.substring(end)}`);
 
-      // asynchronously update textarea selection to include tab
-      // workaround due to https://github.com/facebook/react/issues/14174
-      requestAnimationFrame(() => {
-        e.target.selectionStart = start + 1;
-        e.target.selectionEnd = start + 1;
-      });
-    }
-  }
+  // Fonction pour convertir le texte en HTML structuré
+  const renderText = text => {
+    return text.split('\n').map((line, index) => {
+      if (line.startsWith('# '))
+        return <StyledH3 key={index}>{line.replace('# ', '')}</StyledH3>;
+      if (line.startsWith('## '))
+        return <StyledH2 key={index}>{line.replace('## ', '')}</StyledH2>;
+      if (line.startsWith('### '))
+        return <StyledH1 key={index}>{line.replace('### ', '')}</StyledH1>;
+      return <p key={index}>{line}</p>;
+    });
+  };
 
   return (
     <Div>
       <section className="np__toolbar">
         <WindowDropDowns items={dropDownData} onClickItem={onClickOptionItem} />
       </section>
-      <StyledTextarea
-        wordWrap={wordWrap}
-        value={docText}
-        onChange={e => setDocText(e.target.value)}
-        onKeyDown={onTextAreaKeyDown}
-        spellCheck={false}
-      />
+      <StyledContent wordWrap={wordWrap}>{renderText(docText)}</StyledContent>
     </Div>
   );
 }
@@ -81,16 +73,62 @@ const Div = styled.div`
   }
 `;
 
-const StyledTextarea = styled.textarea`
+const StyledContent = styled.div`
   flex: auto;
-  outline: none;
+  padding: 10px;
+  overflow-y: scroll;
+  border: 1px solid #96abff;
+  background: #fff;
   font-family: 'Lucida Console', monospace;
   font-size: 13px;
   line-height: 14px;
-  resize: none;
-  padding: 2px;
-  ${props =>
-    props.wordWrap ? '' : 'white-space: pre-wrap; overflow-x: scroll;'}
-  overflow-y: scroll;
-  border: 1px solid #96abff;
+  white-space: pre-wrap;
+
+  p {
+    margin-top: 0.25em;
+    margin-bottom: 0.25em;
+  }
+`;
+
+// Style pour h1 plus grand
+const StyledH1 = styled.h1`
+  font-size: 2em; /* Taille plus grande pour h1 */
+  margin-top: 0.5em;
+  margin-bottom: 1.5em;
+`;
+
+// Style pour h2 avec un point devant
+const StyledH2 = styled.h2`
+  font-size: 1.25em;
+  margin-top: 1.2em;
+  margin-bottom: 0.5em;
+  position: relative;
+  padding-left: 20px; /* Espace pour le point */
+
+  &:before {
+    content: '•';
+    position: absolute;
+    left: 0;
+    font-size: 1.5em; /* Taille du point */
+    line-height: 1em;
+  }
+`;
+
+// Style pour h3 avec un trophée devant
+const StyledH3 = styled.h3`
+  font-size: 1.3em; /* Taille plus petite pour h3 */
+  font-style: italic; /* Italique pour h3 */
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+  position: relative;
+  padding-left: 30px; /* Espace pour le trophée */
+
+  &::before {
+    content: '🏆';
+    position: absolute;
+    left: 30px;
+    top: 0;
+    font-size: 1.5em; /* Taille du trophée */
+    line-height: 1em;
+  }
 `;

@@ -33,6 +33,7 @@ const initState = {
   selecting: false,
   powerState: POWER_STATE.START,
 };
+
 const reducer = (state, action = { type: '' }) => {
   switch (action.type) {
     case ADD_APP:
@@ -173,6 +174,7 @@ const reducer = (state, action = { type: '' }) => {
       return state;
   }
 };
+
 function WinXP() {
   const [state, dispatch] = useReducer(reducer, initState);
   const ref = useRef(null);
@@ -205,6 +207,7 @@ function WinXP() {
     },
     [focusedAppId],
   );
+
   function onMouseDownFooterApp(id) {
     if (focusedAppId === id) {
       dispatch({ type: MINIMIZE_APP, payload: id });
@@ -212,15 +215,18 @@ function WinXP() {
       dispatch({ type: FOCUS_APP, payload: id });
     }
   }
+
   function onMouseDownIcon(id) {
     dispatch({ type: FOCUS_ICON, payload: id });
   }
+
   function onDoubleClickIcon(component) {
     const appSetting = Object.values(appSettings).find(
       setting => setting.component === component,
     );
     dispatch({ type: ADD_APP, payload: appSetting });
   }
+
   function getFocusedAppId() {
     if (state.focusing !== FOCUSING.WINDOW) return -1;
     const focusedApp = [...state.apps]
@@ -228,39 +234,37 @@ function WinXP() {
       .find(app => !app.minimized);
     return focusedApp ? focusedApp.id : -1;
   }
+
   function onMouseDownFooter() {
     dispatch({ type: FOCUS_DESKTOP });
   }
+
   function onClickMenuItem(o) {
-    if (o === 'Internet')
-      dispatch({ type: ADD_APP, payload: appSettings['Internet Explorer'] });
-    else if (o === 'Minesweeper')
-      dispatch({ type: ADD_APP, payload: appSettings.Minesweeper });
-    else if (o === 'My Computer')
-      dispatch({ type: ADD_APP, payload: appSettings['My Computer'] });
-    else if (o === 'Notepad')
-      dispatch({ type: ADD_APP, payload: appSettings.Notepad });
-    else if (o === 'Prix_et_selections')
-      dispatch({ type: ADD_APP, payload: appSettings.Prix_et_selections });
-    else if (o === 'Critiques')
-      dispatch({ type: ADD_APP, payload: appSettings.Critiques });
-    else if (o === 'Générique')
-      dispatch({ type: ADD_APP, payload: appSettings.Générique });
-    else if (o === 'Beretta')
-      dispatch({ type: ADD_APP, payload: appSettings.Beretta });
-    else if (o === 'PhotosDuFilm')
-      dispatch({ type: ADD_APP, payload: appSettings.PhotosDuFilm });
-    else if (o === 'PhotosDuTournage')
-      dispatch({ type: ADD_APP, payload: appSettings.PhotosDuTournage });
-    else if (o === 'Winamp')
-      dispatch({ type: ADD_APP, payload: appSettings.Winamp });
-    else if (o === 'Paint')
-      dispatch({ type: ADD_APP, payload: appSettings.Paint });
-    else if (o === 'Log Off')
-      dispatch({ type: POWER_OFF, payload: POWER_STATE.LOG_OFF });
-    else if (o === 'Turn Off Computer')
-      dispatch({ type: POWER_OFF, payload: POWER_STATE.TURN_OFF });
-    else
+    const actionMapping = {
+      Internet: 'Internet Explorer',
+      Minesweeper: 'Minesweeper',
+      'My Computer': 'My Computer',
+      Notepad: 'Notepad',
+      Prix_et_selections: 'Prix_et_selections',
+      Critiques: 'Critiques',
+      Générique: 'Générique',
+      Beretta: 'Beretta',
+      PhotosDuFilm: 'PhotosDuFilm',
+      PhotosDuTournage: 'PhotosDuTournage',
+      Winamp: 'Winamp',
+      Paint: 'Paint',
+      'Log Off': POWER_STATE.LOG_OFF,
+      'Turn Off Computer': POWER_STATE.TURN_OFF,
+    };
+
+    if (actionMapping[o]) {
+      const action = actionMapping[o];
+      if (typeof action === 'string') {
+        dispatch({ type: ADD_APP, payload: appSettings[action] });
+      } else {
+        dispatch({ type: POWER_OFF, payload: action });
+      }
+    } else {
       dispatch({
         type: ADD_APP,
         payload: {
@@ -268,43 +272,54 @@ function WinXP() {
           injectProps: { message: 'C:\\\nApplication not found' },
         },
       });
+    }
   }
+
   function onMouseDownDesktop(e) {
-    if (e.target === e.currentTarget)
+    if (e.target === e.currentTarget) {
       dispatch({
         type: START_SELECT,
         payload: { x: mouse.docX, y: mouse.docY },
       });
+    }
   }
-  function onMouseUpDesktop(e) {
+
+  function onMouseUpDesktop() {
     dispatch({ type: END_SELECT });
   }
+
   const onIconsSelected = useCallback(
     iconIds => {
       dispatch({ type: SELECT_ICONS, payload: iconIds });
     },
     [dispatch],
   );
-  function onClickModalButton(text) {
+
+  function onClickModalButton() {
     dispatch({ type: CANCEL_POWER_OFF });
     dispatch({
       type: ADD_APP,
       payload: appSettings.Error,
     });
   }
+
   function onModalClose() {
     dispatch({ type: CANCEL_POWER_OFF });
   }
+
   return (
     <Container
       ref={ref}
       onMouseUp={onMouseUpDesktop}
       onMouseDown={onMouseDownDesktop}
+      onTouchEnd={onMouseUpDesktop} // Gérer les interactions tactiles
+      onTouchStart={onMouseDownDesktop} // Gérer les interactions tactiles
       state={state.powerState}
     >
       <Icons
         icons={state.icons}
         onMouseDown={onMouseDownIcon}
+        onTouchStart={onMouseDownIcon} // Gérer les interactions tactiles
         onDoubleClick={onDoubleClickIcon}
         displayFocus={state.focusing === FOCUSING.ICON}
         appSettings={appSettings}
@@ -316,6 +331,7 @@ function WinXP() {
       <Windows
         apps={state.apps}
         onMouseDown={onFocusApp}
+        onTouchStart={onFocusApp} // Gérer les interactions tactiles
         onClose={onCloseApp}
         onMinimize={onMinimizeWindow}
         onMaximize={onMaximizeWindow}
@@ -324,8 +340,10 @@ function WinXP() {
       <Footer
         apps={state.apps}
         onMouseDownApp={onMouseDownFooterApp}
+        onTouchStartApp={onMouseDownFooterApp} // Gérer les interactions tactiles
         focusedAppId={focusedAppId}
         onMouseDown={onMouseDownFooter}
+        onTouchStart={onMouseDownFooter} // Gérer les interactions tactiles
         onClickMenuItem={onClickMenuItem}
       />
       {state.powerState !== POWER_STATE.START && (
@@ -350,6 +368,7 @@ const powerOffAnimation = keyframes`
     filter: brightness(0.6) grayscale(1);
   }
 `;
+
 const animation = {
   [POWER_STATE.START]: '',
   [POWER_STATE.TURN_OFF]: powerOffAnimation,

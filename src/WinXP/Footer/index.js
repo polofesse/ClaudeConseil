@@ -36,17 +36,16 @@ function Footer({
   const [time, setTime] = useState(getTime);
   const [menuOn, setMenuOn] = useState(false);
   const menu = useRef(null);
+
   function toggleMenu() {
-    setMenuOn(on => !on);
+    setMenuOn(prev => !prev); // Inverse l'état : si ouvert, fermer, sinon ouvrir.
   }
-  function _onMouseDown(e) {
-    if (e.target.closest('.footer__window')) return;
-    onMouseDown();
-  }
+
   function _onClickMenuItem(name) {
     onClickMenuItem(name);
-    setMenuOn(false);
+    setMenuOn(false); // Ferme le menu après avoir cliqué sur un élément du menu.
   }
+
   useEffect(() => {
     const timer = setInterval(() => {
       const newTime = getTime();
@@ -54,18 +53,9 @@ function Footer({
     }, 1000);
     return () => clearInterval(timer);
   }, [time]);
-  useEffect(() => {
-    const target = menu.current;
-    if (!target) return;
-    function onMouseDown(e) {
-      if (!target.contains(e.target) && menuOn) setMenuOn(false);
-    }
-    window.addEventListener('mousedown', onMouseDown);
-    return () => window.removeEventListener('mousedown', onMouseDown);
-  }, [menuOn]);
 
   return (
-    <Container onMouseDown={_onMouseDown}>
+    <Container>
       <div className="footer__items left">
         <div ref={menu} className="footer__start__menu">
           {menuOn && <FooterMenu onClick={_onClickMenuItem} />}
@@ -75,6 +65,7 @@ function Footer({
           alt="start"
           className="footer__start"
           onMouseDown={toggleMenu}
+          onTouchStart={toggleMenu} // Gère l'ouverture et la fermeture pour mobile
         />
         {[...apps].map(
           app =>
@@ -85,6 +76,7 @@ function Footer({
                 icon={app.header.icon}
                 title={app.header.title}
                 onMouseDown={onMouseDownApp}
+                onTouchStart={onMouseDownApp} // Gère les clics pour mobile
                 isFocus={focusedAppId === app.id}
               />
             ),
@@ -104,13 +96,19 @@ function Footer({
   );
 }
 
-function FooterWindow({ id, icon, title, onMouseDown, isFocus }) {
+function FooterWindow({ id, icon, title, onMouseDown, onTouchStart, isFocus }) {
   function _onMouseDown() {
     onMouseDown(id);
   }
+
+  function _onTouchStart() {
+    onTouchStart(id);
+  }
+
   return (
     <div
       onMouseDown={_onMouseDown}
+      onTouchStart={_onTouchStart} // Gère les clics pour mobile
       className={`footer__window ${isFocus ? 'focus' : 'cover'}`}
     >
       <img className="footer__icon" src={icon} alt={title} />
