@@ -1,21 +1,49 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-
 import { WindowDropDowns } from 'components';
 import dropDownData from './dropDownData';
 
 export default function Prix_et_selections({ onClose }) {
-  const [docText, setDocText] = useState(
-    "Bienvenue sur le site du film\nLes Mystérieuses Aventures de Claude Conseil \nLe site est encore en construction, \net l'affichage est adapté à un ordinateur de bureau \nBonne visite!",
-  );
+  const [docText, setDocText] = useState('');
   const [wordWrap, setWordWrap] = useState(false);
 
   useEffect(() => {
-    fetch(process.env.PUBLIC_URL + '/selections.html')
+    fetch(
+      'https://docs.google.com/document/d/e/2PACX-1vRtRmskiwHJulV5e2Ff2r_240ieJZEvlUoBYMLg5h07LAQbL8L5hQwFxJnPcXGObyZVE-JE6DxKdjpU/pub?output=html',
+    )
       .then(response => response.text())
       .then(data => {
-        setDocText(data);
-      });
+        // Parse the HTML content into a DOM structure
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(data, 'text/html');
+
+        // Extract meaningful text content from the document, preserving headings and paragraphs
+        let extractedText = '';
+
+        // Extract H1, H2, H3, and paragraphs
+        doc.querySelectorAll('h1, h2, h3, p').forEach(element => {
+          const tag = element.tagName.toLowerCase();
+          const textContent = element.textContent.trim();
+
+          if (textContent) {
+            if (tag === 'h1') {
+              extractedText += `### ${textContent}\n`;
+            } else if (tag === 'h2') {
+              extractedText += `## ${textContent}\n`;
+            } else if (tag === 'h3') {
+              extractedText += `# ${textContent}\n`;
+            } else {
+              extractedText += `${textContent}\n`;
+            }
+          }
+        });
+
+        // Set the extracted text to state
+        setDocText(extractedText);
+      })
+      .catch(error =>
+        console.error('Erreur lors du chargement du document :', error),
+      );
   }, []);
 
   function onClickOptionItem(item) {
@@ -36,15 +64,15 @@ export default function Prix_et_selections({ onClose }) {
     }
   }
 
-  // Fonction pour convertir le texte en HTML structuré
+  // Function to render text with headings and paragraphs
   const renderText = text => {
     return text.split('\n').map((line, index) => {
-      if (line.startsWith('# '))
-        return <StyledH3 key={index}>{line.replace('# ', '')}</StyledH3>;
-      if (line.startsWith('## '))
-        return <StyledH2 key={index}>{line.replace('## ', '')}</StyledH2>;
       if (line.startsWith('### '))
         return <StyledH1 key={index}>{line.replace('### ', '')}</StyledH1>;
+      if (line.startsWith('## '))
+        return <StyledH2 key={index}>{line.replace('## ', '')}</StyledH2>;
+      if (line.startsWith('# '))
+        return <StyledH3 key={index}>{line.replace('# ', '')}</StyledH3>;
       return <p key={index}>{line}</p>;
     });
   };
@@ -80,55 +108,53 @@ const StyledContent = styled.div`
   border: 1px solid #96abff;
   background: #fff;
   font-family: 'Lucida Console', monospace;
-  font-size: 13px;
-  line-height: 14px;
+  font-size: 9.75px; /* Réduction à environ 3/4 (13px * 0.75) */
+  line-height: 1.2em; /* Ajustement léger pour la réduction de taille */
   white-space: pre-wrap;
 
   p {
-    margin-top: 0.25em;
-    margin-bottom: 0.25em;
+    margin-top: 0.1em;
+    margin-bottom: 0.1em;
+    line-height: inherit;
   }
 `;
 
-// Style pour h1 plus grand
 const StyledH1 = styled.h1`
-  font-size: 2em; /* Taille plus grande pour h1 */
+  font-size: 1.5em; /* Taille réduite pour h1 (2em * 0.75) */
   margin-top: 0.5em;
-  margin-bottom: 1.5em;
+  margin-bottom: 1.2em;
 `;
 
-// Style pour h2 avec un point devant
 const StyledH2 = styled.h2`
-  font-size: 1.25em;
-  margin-top: 1.2em;
-  margin-bottom: 0.5em;
+  font-size: 0.94em; /* Taille réduite pour h2 (1.25em * 0.75) */
+  margin-top: 1em;
+  margin-bottom: 0.4em;
   position: relative;
-  padding-left: 20px; /* Espace pour le point */
+  padding-left: 15px; /* Ajustement pour la taille du point */
 
   &:before {
     content: '•';
     position: absolute;
     left: 0;
-    font-size: 1.5em; /* Taille du point */
+    font-size: 1.2em; /* Taille réduite du point */
     line-height: 1em;
   }
 `;
 
-// Style pour h3 avec un trophée devant
 const StyledH3 = styled.h3`
-  font-size: 1.3em; /* Taille plus petite pour h3 */
-  font-style: italic; /* Italique pour h3 */
-  margin-top: 0.5em;
-  margin-bottom: 0.5em;
+  font-size: 0.975em; /* Taille réduite pour h3 (1.3em * 0.75) */
+  font-style: italic;
+  margin-top: 0.4em;
+  margin-bottom: 0.4em;
   position: relative;
-  padding-left: 30px; /* Espace pour le trophée */
+  padding-left: 52px; /* Ajustement pour la taille du trophée */
 
   &::before {
     content: '🏆';
     position: absolute;
     left: 30px;
     top: 0;
-    font-size: 1.5em; /* Taille du trophée */
+    font-size: 1.2em; /* Taille réduite du trophée */
     line-height: 1em;
   }
 `;
