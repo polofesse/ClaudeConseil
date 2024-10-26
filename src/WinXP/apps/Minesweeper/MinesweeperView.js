@@ -45,6 +45,30 @@ const digits = [
   digit8,
   digit9,
 ];
+// Fonction qui retourne l'image correspondante au nombre de mines
+function getTextImg(mines) {
+  switch (mines) {
+    case 1:
+      return open1;
+    case 2:
+      return open2;
+    case 3:
+      return open3;
+    case 4:
+      return open4;
+    case 5:
+      return open5;
+    case 6:
+      return open6;
+    case 7:
+      return open7;
+    case 8:
+      return open8;
+    default:
+      return empty; // Retourne une image vide si le nombre de mines ne correspond à aucune condition
+  }
+}
+
 function renderDigits(number) {
   let numberStr;
   if (number < 0) {
@@ -100,6 +124,7 @@ function MineSweeperView({
   const face = useRef(null);
   const [mouseDownContent, setMouseDownContent] = useState(false);
   const [openBehavior, setOpenBehavior] = useState({ index: -1, behavior: '' });
+
   function remainMines() {
     return (
       mines -
@@ -107,6 +132,7 @@ function MineSweeperView({
         .length
     );
   }
+
   function statusFace() {
     if (mouseDownContent) return <img alt="ohh" src={ohh} />;
     switch (status) {
@@ -118,6 +144,7 @@ function MineSweeperView({
         return <img alt="smile" src={smile} />;
     }
   }
+
   function onMouseDownContent(e) {
     if (e.button !== 0) return;
     if (
@@ -128,6 +155,7 @@ function MineSweeperView({
       return;
     setMouseDownContent(true);
   }
+
   useEffect(() => {
     const { index, behavior } = openBehavior;
     switch (behavior) {
@@ -140,6 +168,7 @@ function MineSweeperView({
     }
     // eslint-disable-next-line
   }, [openBehavior.index, openBehavior.behavior]);
+
   function onMouseDownCeils(e) {
     const index = Array.prototype.indexOf.call(
       e.currentTarget.children,
@@ -148,27 +177,40 @@ function MineSweeperView({
     if (e.button === 2 && e.buttons === 2 && index !== -1) {
       changeCeilState(index);
     } else if (e.button === 0 && e.buttons === 1) {
-      setOpenBehavior({
-        index,
-        behavior: 'single',
-      });
+      setOpenBehavior({ index, behavior: 'single' });
     } else if (e.buttons === 3) {
-      setOpenBehavior({
-        index,
-        behavior: 'multi',
-      });
+      setOpenBehavior({ index, behavior: 'multi' });
     }
   }
+
+  function onTouchStartCeils(e) {
+    const index = Array.prototype.indexOf.call(
+      e.currentTarget.children,
+      e.target.closest('.mine__ceil'),
+    );
+    if (index !== -1) {
+      setOpenBehavior({ index, behavior: 'single' });
+    }
+  }
+
+  function onTouchEndCeils() {
+    const { behavior, index } = openBehavior;
+    if (index === -1) return;
+    if (behavior === 'single') {
+      openCeil(index);
+    } else if (behavior === 'multi') {
+      openCeils(index);
+    }
+  }
+
   function onMouseOverCeils(e) {
     const index = Array.prototype.indexOf.call(
       e.currentTarget.children,
       e.target.closest('.mine__ceil'),
     );
-    setOpenBehavior({
-      index,
-      behavior: openBehavior.behavior,
-    });
+    setOpenBehavior({ index, behavior: openBehavior.behavior });
   }
+
   function onMouseUpCeils() {
     const { behavior, index } = openBehavior;
     if (index === -1) return;
@@ -178,6 +220,7 @@ function MineSweeperView({
       openCeils(index);
     }
   }
+
   function onClickOptionItem(item) {
     switch (item) {
       case 'Exit':
@@ -194,22 +237,19 @@ function MineSweeperView({
       default:
     }
   }
+
   useEffect(() => {
     window.addEventListener('mouseup', onMouseUp);
     return () => {
       window.removeEventListener('mouseup', onMouseUp);
     };
   }, []);
+
   function onMouseUp(e) {
     setOpenBehavior({ index: -1, behavior: '' });
     setMouseDownContent(false);
   }
-  useEffect(() => {
-    window.addEventListener('mouseup', onMouseUp);
-    return () => {
-      window.removeEventListener('mouseup', onMouseUp);
-    };
-  }, []);
+
   return (
     <div className={className} onContextMenu={e => e.preventDefault()}>
       <div className="mine__options">
@@ -236,6 +276,8 @@ function MineSweeperView({
           onMouseDown={onMouseDownCeils}
           onMouseOver={onMouseOverCeils}
           onMouseUp={onMouseUpCeils}
+          onTouchStart={onTouchStartCeils}
+          onTouchEnd={onTouchEndCeils}
         >
           <Ceils ceils={ceils} />
         </div>
@@ -243,9 +285,7 @@ function MineSweeperView({
     </div>
   );
 }
-function getTextImg(index) {
-  return [empty, open1, open2, open3, open4, open5, open6, open7, open8][index];
-}
+
 function Ceils({ ceils }) {
   function renderContent(ceil) {
     const { state, minesAround, opening } = ceil;

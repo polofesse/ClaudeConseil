@@ -152,7 +152,13 @@ function reducer(state, action = {}) {
   }
 }
 
-function MineSweeper({ defaultDifficulty, onClose }) {
+function MineSweeper({
+  defaultDifficulty,
+  onClose,
+  sameTouchPos,
+  lastTouch,
+  platform,
+}) {
   const [state, dispatch] = useReducer(
     reducer,
     getInitState(defaultDifficulty),
@@ -180,7 +186,7 @@ function MineSweeper({ defaultDifficulty, onClose }) {
         }
         break;
       default:
-      // console.log(state.status);
+        console.log(state.status);
     }
   }
   function openCeils(index) {
@@ -240,6 +246,9 @@ function MineSweeper({ defaultDifficulty, onClose }) {
       seconds={seconds}
       openingCeil={openingCeil}
       openingCeils={openingCeils}
+      sameTouchPos={sameTouchPos}
+      lastTouch={lastTouch}
+      platform={platform}
     />
   );
 }
