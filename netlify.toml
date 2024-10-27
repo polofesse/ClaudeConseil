@@ -15,5 +15,5 @@
   status = 200
   force = true
   [redirects.headers]
-    X-Prerender-Token = "VOTRE_PRERENDER_TOKEN" # Remplacez par votre vrai token
+    X-Prerender-Token = "8VDyQuiEprEKqmlFHY2u" # Remplacez par votre vrai token
 
