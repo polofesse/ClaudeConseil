@@ -16,10 +16,9 @@ function ContactUs() {
   const handleChangeEmail = e => setEmail(e.target.value);
   const handleCaptchaChange = value => setCaptchaValue(value);
 
-  const handleSubmit = async e => {
+  const handleSubmit = e => {
     e.preventDefault();
 
-    // Vérifier si tous les champs sont remplis et que le captcha est validé
     if (!name || !email || !message || !captchaValue) {
       setStatusMessage(
         'Veuillez remplir tous les champs et valider le captcha.',
@@ -27,65 +26,57 @@ function ContactUs() {
       return;
     }
 
-    // Envoyer les données à la fonction Netlify
-    try {
-      const response = await fetch('/.netlify/functions/send-email', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, message, captchaValue }),
-      });
-
-      const result = await response.json();
-
-      if (response.ok) {
-        setStatusMessage('Votre message a été envoyé avec succès !');
-      } else {
-        setStatusMessage(
-          result.message || 'Une erreur est survenue. Veuillez réessayer.',
-        );
-      }
-    } catch (error) {
-      setStatusMessage(
-        'Une erreur est survenue. Veuillez vérifier votre connexion internet.',
-      );
-    }
-
-    // Réinitialiser le formulaire
-    setMessage('');
-    setName('');
-    setEmail('');
-    setCaptchaValue(null);
+    // Message de succès localement car Netlify prend en charge la soumission du formulaire.
+    setStatusMessage('Votre message a été envoyé avec succès !');
   };
 
   return (
     <GuestBookContainer>
       <GuestBookTitle>📨 Contactez-nous 📨</GuestBookTitle>
-      <Input
-        type="text"
-        placeholder="Votre nom"
-        value={name}
-        onChange={handleChangeName}
-      />
-      <Input
-        type="email"
-        placeholder="Votre adresse e-mail"
-        value={email}
-        onChange={handleChangeEmail}
-      />
-      <MessageArea
-        placeholder="Écrivez votre message ici..."
-        value={message}
-        onChange={handleChangeMessage}
-      />
-      <CaptchaContainer>
-        <ReCAPTCHA
-          sitekey="6Le1NG0qAAAAAMcyks04MvBRUHdIZBVPk0H3maqw" // Remplacez par votre clé de site reCAPTCHA
-          onChange={handleCaptchaChange}
+      <form
+        name="contact"
+        method="POST"
+        data-netlify="true"
+        netlify-honeypot="bot-field"
+        onSubmit={handleSubmit}
+      >
+        <input type="hidden" name="form-name" value="contact" />
+        <p hidden>
+          <label>
+            Ne pas remplir ceci : <input name="bot-field" onChange={() => {}} />
+          </label>
+        </p>
+
+        <Input
+          type="text"
+          name="name"
+          placeholder="Votre nom"
+          value={name}
+          onChange={handleChangeName}
         />
-      </CaptchaContainer>
-      <ButtonContainer>
-        <SubmitButton onClick={handleSubmit}>Envoyer</SubmitButton>
-      </ButtonContainer>
+        <Input
+          type="email"
+          name="email"
+          placeholder="Votre adresse e-mail"
+          value={email}
+          onChange={handleChangeEmail}
+        />
+        <MessageArea
+          name="message"
+          placeholder="Écrivez votre message ici..."
+          value={message}
+          onChange={handleChangeMessage}
+        />
+        <CaptchaContainer>
+          <ReCAPTCHA
+            sitekey="6Le1NG0qAAAAAMcyks04MvBRUHdIZBVPk0H3maqw"
+            onChange={handleCaptchaChange}
+          />
+        </CaptchaContainer>
+        <ButtonContainer>
+          <SubmitButton type="submit">Envoyer</SubmitButton>
+        </ButtonContainer>
+      </form>
       {statusMessage && <StatusMessage>{statusMessage}</StatusMessage>}
       <BirdGif src="https://i.imgur.com/DzRsFAu.gif" alt="bird" />
     </GuestBookContainer>
@@ -101,7 +92,7 @@ const GuestBookContainer = styled.div`
   border: 2px solid #a3baff;
   border-radius: 12px;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-  position: relative; /* Nécessaire pour positionner le gif */
+  position: relative;
 `;
 
 const GuestBookTitle = styled.h1`
@@ -185,7 +176,7 @@ const BirdGif = styled.img`
   transform: translateX(-50%);
   width: 200px;
   height: auto;
-  pointer-events: none; /* Pour éviter l'interaction avec le gif */
+  pointer-events: none;
 `;
 
 export default ContactUs;
