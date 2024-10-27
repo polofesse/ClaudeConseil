@@ -359,7 +359,7 @@ export const appSettings = {
     component: ContactForm,
     defaultSize: {
       width: 500,
-      height: 550,
+      height: 470,
     },
     defaultOffset: {
       x: (window.innerWidth - window.innerWidth) / 2,
