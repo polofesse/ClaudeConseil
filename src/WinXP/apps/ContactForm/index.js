@@ -1,5 +1,3 @@
-// src/WinXP/apps/GuestBook/index.js
-
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import ReCAPTCHA from 'react-google-recaptcha';
@@ -19,7 +17,7 @@ function ContactUs() {
   const handleSubmit = async e => {
     e.preventDefault();
 
-    // Vérifier si tous les champs sont remplis et que le captcha est validé
+    // Vérifiez que tous les champs sont remplis
     if (!name || !email || !message || !captchaValue) {
       setStatusMessage(
         'Veuillez remplir tous les champs et valider le captcha.',
@@ -27,10 +25,33 @@ function ContactUs() {
       return;
     }
 
-    // Netlify Forms gère la soumission
-    setStatusMessage('Votre message a été envoyé avec succès !');
+    // Créez un objet FormData pour envoyer les données de formulaire
+    const formData = new FormData();
+    formData.append('name', name);
+    formData.append('email', email);
+    formData.append('message', message);
+    formData.append('bot-field', ''); // Champ honeypot
+    formData.append('form-name', 'contact-hidden'); // Nom du formulaire caché
 
-    // Réinitialiser le formulaire
+    // Envoyez les données de formulaire à Netlify
+    try {
+      const response = await fetch('/', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (response.ok) {
+        setStatusMessage('Votre message a été envoyé avec succès !');
+      } else {
+        setStatusMessage('Une erreur est survenue. Veuillez réessayer.');
+      }
+    } catch (error) {
+      setStatusMessage(
+        'Une erreur est survenue. Veuillez vérifier votre connexion internet.',
+      );
+    }
+
+    // Réinitialisez le formulaire
     setMessage('');
     setName('');
     setEmail('');
@@ -39,7 +60,7 @@ function ContactUs() {
 
   return (
     <GuestBookContainer>
-      {/* Formulaire Netlify caché */}
+      <GuestBookTitle>📨 Contactez-nous 📨</GuestBookTitle>
       <form
         name="contact-hidden"
         method="POST"
@@ -47,54 +68,38 @@ function ContactUs() {
         netlify-honeypot="bot-field"
         hidden
       >
+        {/* Formulaire caché pour Netlify */}
         <input type="text" name="name" />
         <input type="email" name="email" />
         <textarea name="message"></textarea>
-        <button type="submit">Send</button>
       </form>
-
-      {/* Formulaire principal visible */}
-      <form
-        name="contact"
-        method="POST"
-        data-netlify="true"
-        netlify-honeypot="bot-field"
-        onSubmit={handleSubmit}
-      >
-        {/* Champ caché pour Netlify */}
-        <input type="hidden" name="form-name" value="contact" />
-        <GuestBookTitle>📨 Contactez-nous 📨</GuestBookTitle>
-        <Input
-          type="text"
-          placeholder="Votre nom"
-          name="name"
-          value={name}
-          onChange={handleChangeName}
+      <Input
+        type="text"
+        placeholder="Votre nom"
+        value={name}
+        onChange={handleChangeName}
+      />
+      <Input
+        type="email"
+        placeholder="Votre adresse e-mail"
+        value={email}
+        onChange={handleChangeEmail}
+      />
+      <MessageArea
+        placeholder="Écrivez votre message ici..."
+        value={message}
+        onChange={handleChangeMessage}
+      />
+      <CaptchaContainer>
+        <ReCAPTCHA
+          sitekey="6Le1NG0qAAAAAMcyks04MvBRUHdIZBVPk0H3maqw"
+          onChange={handleCaptchaChange}
         />
-        <Input
-          type="email"
-          placeholder="Votre adresse e-mail"
-          name="email"
-          value={email}
-          onChange={handleChangeEmail}
-        />
-        <MessageArea
-          placeholder="Écrivez votre message ici..."
-          name="message"
-          value={message}
-          onChange={handleChangeMessage}
-        />
-        <CaptchaContainer>
-          <ReCAPTCHA
-            sitekey="6Le1NG0qAAAAAMcyks04MvBRUHdIZBVPk0H3maqw" // Remplacez par votre clé de site reCAPTCHA
-            onChange={handleCaptchaChange}
-          />
-        </CaptchaContainer>
-        <ButtonContainer>
-          <SubmitButton type="submit">Envoyer</SubmitButton>
-        </ButtonContainer>
-        {statusMessage && <StatusMessage>{statusMessage}</StatusMessage>}
-      </form>
+      </CaptchaContainer>
+      <ButtonContainer>
+        <SubmitButton onClick={handleSubmit}>Envoyer</SubmitButton>
+      </ButtonContainer>
+      {statusMessage && <StatusMessage>{statusMessage}</StatusMessage>}
       <BirdGif src="https://i.imgur.com/DzRsFAu.gif" alt="bird" />
     </GuestBookContainer>
   );
