@@ -1,10 +1,2 @@
 [build]
   publish = "build"  # Chemin vers votre dossier de build
-
-[[redirects]]
-  from = "/*"
-  to = "https://service.prerender.io/"
-  status = 200
-  force = true
-  [redirects.headers]  # Définir les en-têtes avec une section dédiée
-    X-Prerender-Token = "8VDyQuiEprEKqmlFHY2u"
