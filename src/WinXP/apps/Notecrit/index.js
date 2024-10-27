@@ -1,21 +1,51 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-
 import { WindowDropDowns } from 'components';
 import dropDownData from './dropDownData';
 
 export default function Prix_et_selections({ onClose }) {
-  const [docText, setDocText] = useState(
-    "Bienvenue sur le site du film\nLes Mystérieuses Aventures de Claude Conseil \nLe site est encore en construction, \net l'affichage est adapté à un ordinateur de bureau \nBonne visite!",
-  );
+  const [docText, setDocText] = useState('');
   const [wordWrap, setWordWrap] = useState(false);
+
   useEffect(() => {
-    fetch(process.env.PUBLIC_URL + '/critiques.html')
+    fetch(
+      'https://docs.google.com/document/d/e/2PACX-1vS8r3ae1Te6ktTnL4DKrWexddesnVb9D1OeJ4Ya-RtyqoAtn74cJhKPMPSBBgrSel1Bf4jCZsIsVlXc/pub',
+    )
       .then(response => response.text())
       .then(data => {
-        setDocText(data);
-      });
+        // Parse the HTML content into a DOM structure
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(data, 'text/html');
+
+        // Extract meaningful text content from the document, preserving headings and paragraphs
+        let extractedText = '';
+
+        // Extract H1, H2, H3, and paragraphs
+        doc.querySelectorAll('h1, h2, h3, p').forEach(element => {
+          const tag = element.tagName.toLowerCase();
+          const textContent = element.textContent.trim();
+
+          if (textContent) {
+            if (tag === 'h1') {
+              extractedText += `### ${textContent}\n`;
+            } else if (tag === 'h2') {
+              extractedText += `## ${textContent}\n`;
+            } else if (tag === 'h3') {
+              extractedText += `# ${textContent}\n`;
+            } else {
+              extractedText += `${textContent}\n`;
+            }
+          }
+        });
+
+        // Set the extracted text to state
+        setDocText(extractedText);
+      })
+      .catch(error =>
+        console.error('Erreur lors du chargement du document :', error),
+      );
   }, []);
+
   function onClickOptionItem(item) {
     switch (item) {
       case 'Exit':
@@ -33,36 +63,26 @@ export default function Prix_et_selections({ onClose }) {
       default:
     }
   }
-  function onTextAreaKeyDown(e) {
-    // handle tabs in text area
-    if (e.which === 9) {
-      e.preventDefault();
-      e.persist();
-      var start = e.target.selectionStart;
-      var end = e.target.selectionEnd;
-      setDocText(`${docText.substring(0, start)}\t${docText.substring(end)}`);
 
-      // asynchronously update textarea selection to include tab
-      // workaround due to https://github.com/facebook/react/issues/14174
-      requestAnimationFrame(() => {
-        e.target.selectionStart = start + 1;
-        e.target.selectionEnd = start + 1;
-      });
-    }
-  }
+  // Function to render text with headings and paragraphs
+  const renderText = text => {
+    return text.split('\n').map((line, index) => {
+      if (line.startsWith('### '))
+        return <StyledH1 key={index}>{line.replace('### ', '')}</StyledH1>;
+      if (line.startsWith('## '))
+        return <StyledH2 key={index}>{line.replace('## ', '')}</StyledH2>;
+      if (line.startsWith('# '))
+        return <StyledH3 key={index}>{line.replace('# ', '')}</StyledH3>;
+      return <p key={index}>{line}</p>;
+    });
+  };
 
   return (
     <Div>
       <section className="np__toolbar">
         <WindowDropDowns items={dropDownData} onClickItem={onClickOptionItem} />
       </section>
-      <StyledTextarea
-        wordWrap={wordWrap}
-        value={docText}
-        onChange={e => setDocText(e.target.value)}
-        onKeyDown={onTextAreaKeyDown}
-        spellCheck={false}
-      />
+      <StyledContent wordWrap={wordWrap}>{renderText(docText)}</StyledContent>
     </Div>
   );
 }
@@ -81,16 +101,51 @@ const Div = styled.div`
   }
 `;
 
-const StyledTextarea = styled.textarea`
+const StyledContent = styled.div`
   flex: auto;
-  outline: none;
-  font-family: 'Lucida Console', monospace;
-  font-size: 13px;
-  line-height: 14px;
-  resize: none;
-  padding: 2px;
-  ${props =>
-    props.wordWrap ? '' : 'white-space: pre-wrap; overflow-x: scroll;'}
+  padding: 10px;
   overflow-y: scroll;
   border: 1px solid #96abff;
+  background: #fff;
+  font-family: 'Lucida Console', monospace;
+  font-size: 9.75px; /* Réduction à environ 3/4 (13px * 0.75) */
+  line-height: 1.2em; /* Ajustement léger pour la réduction de taille */
+  white-space: pre-wrap;
+
+  p {
+    margin-top: 0.1em;
+    margin-bottom: 0.1em;
+    line-height: inherit;
+  }
+`;
+
+const StyledH1 = styled.h1`
+  font-size: 1.5em; /* Taille réduite pour h1 (2em * 0.75) */
+  margin-top: 0.5em;
+  margin-bottom: 1.2em;
+`;
+
+const StyledH2 = styled.h2`
+  font-size: 0.94em; /* Taille réduite pour h2 (1.25em * 0.75) */
+  margin-top: 1em;
+  margin-bottom: 0.4em;
+  position: relative;
+  padding-left: 15px; /* Ajustement pour la taille du point */
+
+  &:before {
+    content: '🖊️';
+    position: absolute;
+    left: 0;
+    font-size: 1.2em; /* Taille réduite du point */
+    line-height: 1em;
+  }
+`;
+
+const StyledH3 = styled.h3`
+  font-size: 0.975em; /* Taille réduite pour h3 (1.3em * 0.75) */
+  font-style: italic;
+  margin-top: 0.4em;
+  margin-bottom: 0.4em;
+  position: relative;
+  padding-left: 52px; /* Ajustement pour la taille du trophée */
 `;

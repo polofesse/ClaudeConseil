@@ -1,19 +1,49 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-
 import { WindowDropDowns } from 'components';
 import dropDownData from './dropDownData';
 
-export default function Notepad({ onClose }) {
+export default function Prix_et_selections({ onClose }) {
   const [docText, setDocText] = useState('');
-  const [wordWrap, setWordWrap] = useState(true);
+  const [wordWrap, setWordWrap] = useState(false);
 
   useEffect(() => {
-    fetch('/presentation.html')
+    fetch(
+      'https://docs.google.com/document/d/e/2PACX-1vT3lwCXXX6AU1gOvGAV-e_MBaPHNvtf68Z1qW-on4gn5C48I13emfJr9mbHMHCjd6Vc9N69-vxv4P4R/pub',
+    )
       .then(response => response.text())
       .then(data => {
-        setDocText(data);
-      });
+        // Parse the HTML content into a DOM structure
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(data, 'text/html');
+
+        // Extract meaningful text content from the document, preserving headings and paragraphs
+        let extractedText = '';
+
+        // Extract H1, H2, H3, and paragraphs
+        doc.querySelectorAll('h1, h2, h3, p').forEach(element => {
+          const tag = element.tagName.toLowerCase();
+          const textContent = element.textContent.trim();
+
+          if (textContent) {
+            if (tag === 'h1') {
+              extractedText += `### ${textContent}\n`;
+            } else if (tag === 'h2') {
+              extractedText += `## ${textContent}\n`;
+            } else if (tag === 'h3') {
+              extractedText += `# ${textContent}\n`;
+            } else {
+              extractedText += `${textContent}\n`;
+            }
+          }
+        });
+
+        // Set the extracted text to state
+        setDocText(extractedText);
+      })
+      .catch(error =>
+        console.error('Erreur lors du chargement du document :', error),
+      );
   }, []);
 
   function onClickOptionItem(item) {
@@ -34,15 +64,15 @@ export default function Notepad({ onClose }) {
     }
   }
 
-  // Fonction pour convertir le texte en HTML structuré
+  // Function to render text with headings and paragraphs
   const renderText = text => {
     return text.split('\n').map((line, index) => {
-      if (line.startsWith('# '))
-        return <h1 key={index}>{line.replace('# ', '')}</h1>;
-      if (line.startsWith('## '))
-        return <h2 key={index}>{line.replace('## ', '')}</h2>;
       if (line.startsWith('### '))
-        return <h3 key={index}>{line.replace('### ', '')}</h3>;
+        return <StyledH1 key={index}>{line.replace('### ', '')}</StyledH1>;
+      if (line.startsWith('## '))
+        return <StyledH2 key={index}>{line.replace('## ', '')}</StyledH2>;
+      if (line.startsWith('# '))
+        return <StyledH3 key={index}>{line.replace('# ', '')}</StyledH3>;
       return <p key={index}>{line}</p>;
     });
   };
@@ -59,7 +89,7 @@ export default function Notepad({ onClose }) {
 
 const Div = styled.div`
   height: 100%;
-  background: #fff;
+  background: linear-gradient(to right, #edede5 0%, #ede8cd 100%);
   display: flex;
   flex-direction: column;
   align-items: stretch;
@@ -78,30 +108,53 @@ const StyledContent = styled.div`
   border: 1px solid #96abff;
   background: #fff;
   font-family: 'Lucida Console', monospace;
-  font-size: 13px;
-  line-height: 14px;
+  font-size: 9.75px; /* Réduction à environ 3/4 (13px * 0.75) */
+  line-height: 1.2em; /* Ajustement léger pour la réduction de taille */
   white-space: pre-wrap;
 
-  h1 {
-    font-size: 1.5em;
-    margin-top: 0.5em;
-    margin-bottom: 0.5em;
-  }
-
-  h2 {
-    font-size: 1.25em;
-    margin-top: 0.5em;
-    margin-bottom: 0.5em;
-  }
-
-  h3 {
-    font-size: 1.1em;
-    margin-top: 0.5em;
-    margin-bottom: 0.5em;
-  }
-
   p {
-    margin-top: 0.25em;
-    margin-bottom: 0.25em;
+    margin-top: 0.1em;
+    margin-bottom: 0.1em;
+    line-height: inherit;
+  }
+`;
+
+const StyledH1 = styled.h1`
+  font-size: 1.5em; /* Taille réduite pour h1 (2em * 0.75) */
+  margin-top: 0.5em;
+  margin-bottom: 1.2em;
+`;
+
+const StyledH2 = styled.h2`
+  font-size: 0.94em; /* Taille réduite pour h2 (1.25em * 0.75) */
+  margin-top: 1em;
+  margin-bottom: 0.4em;
+  position: relative;
+  padding-left: 15px; /* Ajustement pour la taille du point */
+
+  &:before {
+    content: '•';
+    position: absolute;
+    left: 0;
+    font-size: 1.2em; /* Taille réduite du point */
+    line-height: 1em;
+  }
+`;
+
+const StyledH3 = styled.h3`
+  font-size: 0.975em; /* Taille réduite pour h3 (1.3em * 0.75) */
+  font-style: italic;
+  margin-top: 0.4em;
+  margin-bottom: 0.4em;
+  position: relative;
+  padding-left: 52px; /* Ajustement pour la taille du trophée */
+
+  &::before {
+    content: '🦉';
+    position: absolute;
+    left: 30px;
+    top: 0;
+    font-size: 1.2em; /* Taille réduite du trophée */
+    line-height: 1em;
   }
 `;
