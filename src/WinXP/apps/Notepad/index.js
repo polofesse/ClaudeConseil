@@ -108,7 +108,7 @@ const StyledContent = styled.div`
   border: 1px solid #96abff;
   background: #fff;
   font-family: 'Lucida Console', monospace;
-  font-size: 9.75px; /* Réduction à environ 3/4 (13px * 0.75) */
+  font-size: 11px; /* Réduction à environ 3/4 (13px * 0.75) */
   line-height: 1.2em; /* Ajustement léger pour la réduction de taille */
   white-space: pre-wrap;
 
