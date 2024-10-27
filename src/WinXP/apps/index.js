@@ -25,6 +25,7 @@ import generiqueIco from 'assets/windowsIcons/generiqueIco.png';
 import Générique from './Player2';
 import Prix_et_selections from './Noteprix';
 import Critiques from './Notecrit';
+import ContactForm from './ContactForm';
 import SolitaireGame from './Solitaire/Solitaire';
 import spiderico from 'assets/windowsIcons/iconsolitaire.png';
 
@@ -247,6 +248,13 @@ export const defaultIconState = [
     component: SolitaireGame,
     isFocus: false,
   },
+  {
+    id: 13,
+    icon: spiderico,
+    title: 'Livre de Commentaires',
+    component: ContactForm,
+    isFocus: false,
+  },
 ];
 
 export const appSettings = {
@@ -333,6 +341,24 @@ export const appSettings = {
     defaultSize: {
       width: 646,
       height: 392,
+    },
+    defaultOffset: {
+      x: (window.innerWidth - window.innerWidth) / 2,
+      y: 0,
+    },
+    resizable: true,
+    minimized: false,
+    maximized: window.innerWidth < 800,
+  },
+  ContactForm: {
+    header: {
+      icon: BerettaIco,
+      title: 'ContactForm',
+    },
+    component: ContactForm,
+    defaultSize: {
+      width: 500,
+      height: 550,
     },
     defaultOffset: {
       x: (window.innerWidth - window.innerWidth) / 2,
@@ -530,4 +556,5 @@ export {
   Prix_et_selections,
   Critiques,
   SolitaireGame,
+  ContactForm,
 };
