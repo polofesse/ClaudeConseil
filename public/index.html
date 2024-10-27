@@ -19,6 +19,12 @@
     <meta property="og:url" content="https://www.claudeconseil.fr" />
     <meta property="og:site_name" content="Les Mystérieuses Aventures de Claude Conseil" />
 
+    <form name="contact-hidden" method="POST" data-netlify="true" netlify-honeypot="bot-field" hidden>
+      <input type="text" name="name" />
+      <input type="email" name="email" />
+      <textarea name="message"></textarea>
+      <button type="submit">Send</button>
+    </form>
     
 
     <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico" />

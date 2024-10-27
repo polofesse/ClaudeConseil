@@ -27,7 +27,7 @@ function ContactUs() {
       return;
     }
 
-    // La soumission du formulaire est gérée par Netlify Forms
+    // Netlify Forms gère la soumission
     setStatusMessage('Votre message a été envoyé avec succès !');
 
     // Réinitialiser le formulaire
@@ -39,6 +39,21 @@ function ContactUs() {
 
   return (
     <GuestBookContainer>
+      {/* Formulaire Netlify caché */}
+      <form
+        name="contact-hidden"
+        method="POST"
+        data-netlify="true"
+        netlify-honeypot="bot-field"
+        hidden
+      >
+        <input type="text" name="name" />
+        <input type="email" name="email" />
+        <textarea name="message"></textarea>
+        <button type="submit">Send</button>
+      </form>
+
+      {/* Formulaire principal visible */}
       <form
         name="contact"
         method="POST"
@@ -71,7 +86,7 @@ function ContactUs() {
         />
         <CaptchaContainer>
           <ReCAPTCHA
-            sitekey="6Le1NG0qAAAAAMcyks04MvBRUHdIZBVPk0H3maqw" // Remplacez par votre clé de site reCAPTCHA
+            sitekey="VOTRE_CLÉ_SITE_RECAPTCHA" // Remplacez par votre clé de site reCAPTCHA
             onChange={handleCaptchaChange}
           />
         </CaptchaContainer>
