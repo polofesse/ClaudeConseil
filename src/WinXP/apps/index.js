@@ -61,11 +61,11 @@ export const defaultAppState = [
       icon: notepad,
     },
     defaultSize: {
-      width: 280,
+      width: 310,
       height: 450,
     },
     defaultOffset: {
-      x: 90,
+      x: 70,
       y: 20,
     },
     resizable: true,
@@ -159,17 +159,10 @@ export const defaultAppState = [
 
 export const defaultIconState = [
   {
-    id: 11,
-    icon: ie,
-    title: 'Internet Explorer',
-    component: InternetExplorer,
-    isFocus: false,
-  },
-  {
-    id: 1,
-    icon: mine,
-    title: 'Minesweeper',
-    component: Minesweeper,
+    id: 13,
+    icon: mail,
+    title: 'Contact',
+    component: ContactForm,
     isFocus: false,
   },
   {
@@ -180,10 +173,10 @@ export const defaultIconState = [
     isFocus: false,
   },
   {
-    id: 0,
-    icon: notepadLarge,
-    title: 'Bienvenue!',
-    component: Notepad,
+    id: 11,
+    icon: ie,
+    title: 'Internet Explorer',
+    component: InternetExplorer,
     isFocus: false,
   },
   {
@@ -198,6 +191,13 @@ export const defaultIconState = [
     icon: paintLarge,
     title: 'Paint',
     component: Paint,
+    isFocus: false,
+  },
+  {
+    id: 8,
+    icon: generiqueIco,
+    title: 'Générique',
+    component: Générique,
     isFocus: false,
   },
   {
@@ -222,10 +222,10 @@ export const defaultIconState = [
     isFocus: false,
   },
   {
-    id: 8,
-    icon: generiqueIco,
-    title: 'Générique',
-    component: Générique,
+    id: 0,
+    icon: notepadLarge,
+    title: 'Bienvenue!',
+    component: Notepad,
     isFocus: false,
   },
   {
@@ -250,10 +250,10 @@ export const defaultIconState = [
     isFocus: false,
   },
   {
-    id: 13,
-    icon: mail,
-    title: 'Livre de Commentaires',
-    component: ContactForm,
+    id: 1,
+    icon: mine,
+    title: 'Minesweeper',
+    component: Minesweeper,
     isFocus: false,
   },
 ];
