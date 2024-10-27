@@ -7,6 +7,7 @@ import Winamp from './Winamp';
 import Paint from './Paint';
 import iePaper from 'assets/windowsIcons/ie-paper.png';
 import ie from 'assets/windowsIcons/ie.png';
+import mail from 'assets/windowsIcons/mail.png';
 import mine from 'assets/minesweeper/mine-icon.png';
 import error from 'assets/windowsIcons/897(16x16).png';
 import computer from 'assets/windowsIcons/676(16x16).png';
@@ -250,7 +251,7 @@ export const defaultIconState = [
   },
   {
     id: 13,
-    icon: spiderico,
+    icon: mail,
     title: 'Livre de Commentaires',
     component: ContactForm,
     isFocus: false,
@@ -352,8 +353,8 @@ export const appSettings = {
   },
   ContactForm: {
     header: {
-      icon: BerettaIco,
-      title: 'ContactForm',
+      icon: mail,
+      title: 'Un petit mess pour CC?',
     },
     component: ContactForm,
     defaultSize: {
