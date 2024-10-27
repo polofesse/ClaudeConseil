@@ -61,11 +61,11 @@ export const defaultAppState = [
       icon: notepad,
     },
     defaultSize: {
-      width: 280,
+      width: 300,
       height: 450,
     },
     defaultOffset: {
-      x: 90,
+      x: 80,
       y: 20,
     },
     resizable: true,
@@ -158,18 +158,18 @@ export const defaultAppState = [
 ];
 
 export const defaultIconState = [
-  {
-    id: 11,
-    icon: ie,
-    title: 'Internet Explorer',
-    component: InternetExplorer,
-    isFocus: false,
-  },
+  // {
+  //   id: 11,
+  //   icon: ie,
+  //   title: 'Internet Explorer',
+  //   component: InternetExplorer,
+  //   isFocus: false,
+  // },
   {
     id: 1,
-    icon: mine,
-    title: 'Minesweeper',
-    component: Minesweeper,
+    icon: mail,
+    title: 'Contact',
+    component: ContactForm,
     isFocus: false,
   },
   {
@@ -251,9 +251,9 @@ export const defaultIconState = [
   },
   {
     id: 13,
-    icon: mail,
-    title: 'Livre de Commentaires',
-    component: ContactForm,
+    icon: mine,
+    title: 'Minesweeper',
+    component: Minesweeper,
     isFocus: false,
   },
 ];
@@ -545,7 +545,6 @@ export const appSettings = {
 
 export {
   InternetExplorer,
-  Minesweeper,
   ErrorBox,
   MyComputer,
   Notepad,
@@ -558,4 +557,5 @@ export {
   Critiques,
   SolitaireGame,
   ContactForm,
+  Minesweeper,
 };

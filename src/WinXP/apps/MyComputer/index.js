@@ -266,6 +266,71 @@ function MyComputer({ onClose }) {
             </div>
           </div>
           <div className="com__content__right">
+            <div className="com__content__right__card com__content__right__card--me">
+              <div className="com__content__right__card__header">
+                Quelques liens :
+              </div>
+              <div className="com__content__right__card__content">
+                <a
+                  href="https://letterboxd.com/film/the-mysterious-adventures-of-claude-conseil/"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="com__content__right__card__item--me"
+                >
+                  <img
+                    className="com__content__right__card__img"
+                    src={letterboxlogo}
+                    alt="control"
+                  />
+                  <div className="com__content__right__card__text">
+                    Letterboxd
+                  </div>
+                </a>
+                <a
+                  href="https://www.youtube.com/channel/UCW1nsF3lbwEn6oD0Pv3AQ7g"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="com__content__right__card__item--me"
+                >
+                  <img
+                    className="com__content__right__card__img"
+                    src="https://imgur.com/c8Wrnl9.png"
+                    alt="control"
+                  />
+                  <div className="com__content__right__card__text">
+                    Claude Conseil Ornithologie
+                  </div>
+                </a>
+                <a
+                  href="https://www.imdb.com/title/tt31229573/?language=fr-fr"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="com__content__right__card__item--me"
+                >
+                  <img
+                    className="com__content__right__card__img"
+                    src={imdbicon}
+                    alt="control"
+                  />
+                  <div className="com__content__right__card__text">Imdb</div>
+                </a>
+                <a
+                  href="https://www.senscritique.com/film/les_mysterieuses_aventures_de_claude_conseil/76375422"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="com__content__right__card__item--me"
+                >
+                  <img
+                    className="com__content__right__card__img"
+                    src={scicon}
+                    alt="control"
+                  />
+                  <div className="com__content__right__card__text">
+                    Sens Critique
+                  </div>
+                </a>
+              </div>
+            </div>
             <div className="com__content__right__card">
               <div className="com__content__right__card__header">
                 Files Stored on This Computer
@@ -333,71 +398,6 @@ function MyComputer({ onClose }) {
                     CD Drive (D:)
                   </div>
                 </div>
-              </div>
-            </div>
-            <div className="com__content__right__card com__content__right__card--me">
-              <div className="com__content__right__card__header">
-                Quelques liens :
-              </div>
-              <div className="com__content__right__card__content">
-                <a
-                  href="https://letterboxd.com/film/the-mysterious-adventures-of-claude-conseil/"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="com__content__right__card__item--me"
-                >
-                  <img
-                    className="com__content__right__card__img"
-                    src={letterboxlogo}
-                    alt="control"
-                  />
-                  <div className="com__content__right__card__text">
-                    LetterboxHD
-                  </div>
-                </a>
-                <a
-                  href="https://www.youtube.com/channel/UCW1nsF3lbwEn6oD0Pv3AQ7g"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="com__content__right__card__item--me"
-                >
-                  <img
-                    className="com__content__right__card__img"
-                    src="https://imgur.com/c8Wrnl9.png"
-                    alt="control"
-                  />
-                  <div className="com__content__right__card__text">
-                    Claude Conseil Ornithologie
-                  </div>
-                </a>
-                <a
-                  href="https://www.imdb.com/title/tt31229573/?language=fr-fr"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="com__content__right__card__item--me"
-                >
-                  <img
-                    className="com__content__right__card__img"
-                    src={imdbicon}
-                    alt="control"
-                  />
-                  <div className="com__content__right__card__text">Imdb</div>
-                </a>
-                <a
-                  href="https://www.senscritique.com/film/les_mysterieuses_aventures_de_claude_conseil/76375422"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="com__content__right__card__item--me"
-                >
-                  <img
-                    className="com__content__right__card__img"
-                    src={scicon}
-                    alt="control"
-                  />
-                  <div className="com__content__right__card__text">
-                    Sens Critique
-                  </div>
-                </a>
               </div>
             </div>
           </div>

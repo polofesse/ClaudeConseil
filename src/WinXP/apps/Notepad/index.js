@@ -103,12 +103,12 @@ const Div = styled.div`
 
 const StyledContent = styled.div`
   flex: auto;
-  padding: 10px;
+  padding: 9.5px;
   overflow-y: scroll;
   border: 1px solid #96abff;
   background: #fff;
   font-family: 'Lucida Console', monospace;
-  font-size: 11px; /* Réduction à environ 3/4 (13px * 0.75) */
+  font-size: 10.5px; /* Réduction à environ 3/4 (13px * 0.75) */
   line-height: 1.2em; /* Ajustement léger pour la réduction de taille */
   white-space: pre-wrap;
 
