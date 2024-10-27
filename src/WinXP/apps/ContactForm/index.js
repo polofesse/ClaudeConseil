@@ -86,7 +86,7 @@ function ContactUs() {
         />
         <CaptchaContainer>
           <ReCAPTCHA
-            sitekey="VOTRE_CLÉ_SITE_RECAPTCHA" // Remplacez par votre clé de site reCAPTCHA
+            sitekey="6Le1NG0qAAAAAMcyks04MvBRUHdIZBVPk0H3maqw" // Remplacez par votre clé de site reCAPTCHA
             onChange={handleCaptchaChange}
           />
         </CaptchaContainer>
