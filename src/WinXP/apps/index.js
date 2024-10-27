@@ -5,8 +5,8 @@ import MyComputer from './MyComputer';
 import Notepad from './Notepad';
 import Winamp from './Winamp';
 import Paint from './Paint';
-import iePaper from 'assets/windowsIcons/ie-paper.png';
-import ie from 'assets/windowsIcons/ie.png';
+// import iePaper from 'assets/windowsIcons/ie-paper.png';
+// import ie from 'assets/windowsIcons/ie.png';
 import mail from 'assets/windowsIcons/mail.png';
 import mine from 'assets/minesweeper/mine-icon.png';
 import error from 'assets/windowsIcons/897(16x16).png';
@@ -172,13 +172,13 @@ export const defaultIconState = [
     component: MyComputer,
     isFocus: false,
   },
-  {
-    id: 11,
-    icon: ie,
-    title: 'Internet Explorer',
-    component: InternetExplorer,
-    isFocus: false,
-  },
+  // {
+  //   id: 11,
+  //   icon: ie,
+  //   title: 'Internet Explorer',
+  //   component: InternetExplorer,
+  //   isFocus: false,
+  // },
   {
     id: 3,
     icon: winamp,
@@ -259,25 +259,25 @@ export const defaultIconState = [
 ];
 
 export const appSettings = {
-  'Internet Explorer': {
-    header: {
-      icon: iePaper,
-      title: 'InternetExplorer',
-    },
-    component: InternetExplorer,
-    defaultSize: {
-      width: 700,
-      height: 500,
-    },
-    defaultOffset: {
-      x: 140,
-      y: 30,
-    },
-    resizable: true,
-    minimized: false,
-    maximized: window.innerWidth < 800,
-    multiInstance: true,
-  },
+  // 'Internet Explorer': {
+  //   header: {
+  //     icon: iePaper,
+  //     title: 'InternetExplorer',
+  //   },
+  //   component: InternetExplorer,
+  //   defaultSize: {
+  //     width: 700,
+  //     height: 500,
+  //   },
+  //   defaultOffset: {
+  //     x: 140,
+  //     y: 30,
+  //   },
+  //   resizable: true,
+  //   minimized: false,
+  //   maximized: window.innerWidth < 800,
+  //   multiInstance: true,
+  // },
   Minesweeper: {
     header: {
       icon: mine,
