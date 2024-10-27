@@ -158,13 +158,6 @@ export const defaultAppState = [
 ];
 
 export const defaultIconState = [
-  // {
-  //   id: 11,
-  //   icon: ie,
-  //   title: 'Internet Explorer',
-  //   component: InternetExplorer,
-  //   isFocus: false,
-  // },
   {
     id: 1,
     icon: mail,
@@ -198,6 +191,13 @@ export const defaultIconState = [
     icon: paintLarge,
     title: 'Paint',
     component: Paint,
+    isFocus: false,
+  },
+  {
+    id: 11,
+    icon: ie,
+    title: 'Internet Explorer',
+    component: InternetExplorer,
     isFocus: false,
   },
   {
