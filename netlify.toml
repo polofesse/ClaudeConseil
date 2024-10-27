@@ -1,0 +1,11 @@
+[build]
+  publish = "build"  # Assurez-vous de spécifier le dossier où se trouve votre build final (par défaut c'est "build" pour React).
+
+[[redirects]]
+  from = "/*"
+  to = "https://service.prerender.io/"
+  status = 200
+  force = true
+  headers = {
+    "X-Prerender-Token" = "8VDyQuiEprEKqmlFHY2u"
+  }
