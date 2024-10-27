@@ -1,19 +1,12 @@
 [build]
   publish = "build"
-  command = "npm run build" # Utilisez la commande de build appropriée
+  command = "npm run build"
 
 [[redirects]]
   from = "/*"
-  to = "/index.html"
+  to = "https://service.prerender.io/"
   status = 200
   force = true
-  conditions = { "Language": ["fr"] }
 
-[[redirects]]
-  from = "/"
-  to = "https://service.prerender.io/" 
-  status = 200
-  force = true
   [redirects.headers]
-    X-Prerender-Token = "8VDyQuiEprEKqmlFHY2u" # Remplacez par votre vrai token
-
+    X-Prerender-Token = "8VDyQuiEprEKqmlFHY2u"  
