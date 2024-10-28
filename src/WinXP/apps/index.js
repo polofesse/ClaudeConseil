@@ -527,7 +527,7 @@ export const appSettings = {
     // maximized: window.innerWidth < 500,
     multiInstance: true,
   },
-  Notepad: {
+  Diffusions: {
     header: {
       icon: filmico,
       title: 'Projections et diffusions à venir',
