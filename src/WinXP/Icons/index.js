@@ -90,10 +90,10 @@ function Icon({
 const IconsContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr); // Crée deux colonnes de taille égale
-  align-items: center; // Centre les éléments verticalement dans chaque cellule
+  align-items: top; // Centre les éléments verticalement dans chaque cellule
   gap: 6px; // Espacement entre les icônes
   position: absolute;
-  margin-top: 30px;
+  margin-top: 20px;
   margin-left: 30px;
 `;
 
