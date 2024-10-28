@@ -453,7 +453,7 @@ export const appSettings = {
   FilmComplet: {
     header: {
       icon: playerico,
-      title: 'Générique',
+      title: 'Film Complet',
     },
     component: FilmComplet,
     defaultSize: {
