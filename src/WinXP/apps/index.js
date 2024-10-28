@@ -22,13 +22,19 @@ import PhotosDuFilm from './PhotosDuFilm';
 import PhotosDuTournage from './PhotosDuTournage';
 import BerettaIco from 'assets/windowsIcons/beretta.png';
 import Beretta from './Player';
+import BANDEANNONCE from './Player3';
 import generiqueIco from 'assets/windowsIcons/generiqueIco.png';
 import Générique from './Player2';
+import FilmComplet from './Player4';
+import playerico from 'assets/windowsIcons/playerico.png';
 import Prix_et_selections from './Noteprix';
 import Critiques from './Notecrit';
+import Projections from './Notediff';
 import ContactForm from './ContactForm';
 import SolitaireGame from './Solitaire/Solitaire';
 import spiderico from 'assets/windowsIcons/iconsolitaire.png';
+import filmico from 'assets/windowsIcons/filmico.png';
+import baico from 'assets/windowsIcons/baico.png';
 
 const gen = () => {
   let id = -1;
@@ -222,6 +228,13 @@ export const defaultIconState = [
     isFocus: false,
   },
   {
+    id: 15,
+    icon: baico,
+    title: 'Bande-annonce',
+    component: BANDEANNONCE,
+    isFocus: false,
+  },
+  {
     id: 0,
     icon: notepadLarge,
     title: 'Bienvenue!',
@@ -243,6 +256,13 @@ export const defaultIconState = [
     isFocus: false,
   },
   {
+    id: 14,
+    icon: filmico,
+    title: 'Projections',
+    component: Projections,
+    isFocus: false,
+  },
+  {
     id: 12,
     icon: spiderico,
     title: 'Solitaire',
@@ -254,6 +274,13 @@ export const defaultIconState = [
     icon: mine,
     title: 'Minesweeper',
     component: Minesweeper,
+    isFocus: false,
+  },
+  {
+    id: 16,
+    icon: playerico,
+    title: 'Voir le film!',
+    component: FilmComplet,
     isFocus: false,
   },
 ];
@@ -351,6 +378,24 @@ export const appSettings = {
     minimized: false,
     maximized: window.innerWidth < 800,
   },
+  BandeAnnonce: {
+    header: {
+      icon: baico,
+      title: 'Bande-Annonce',
+    },
+    component: BANDEANNONCE,
+    defaultSize: {
+      width: 646,
+      height: 392,
+    },
+    defaultOffset: {
+      x: (window.innerWidth - window.innerWidth) / 2,
+      y: 0,
+    },
+    resizable: true,
+    minimized: false,
+    maximized: window.innerWidth < 800,
+  },
   ContactForm: {
     header: {
       icon: mail,
@@ -393,6 +438,24 @@ export const appSettings = {
       title: 'Générique',
     },
     component: Générique,
+    defaultSize: {
+      width: 646,
+      height: 392,
+    },
+    defaultOffset: {
+      x: (window.innerWidth - window.innerWidth) / 2,
+      y: 0,
+    },
+    resizable: true,
+    minimized: false,
+    maximized: window.innerWidth < 800,
+  },
+  FilmComplet: {
+    header: {
+      icon: playerico,
+      title: 'Générique',
+    },
+    component: FilmComplet,
     defaultSize: {
       width: 646,
       height: 392,
@@ -451,6 +514,25 @@ export const appSettings = {
       title: 'Bienvenue!',
     },
     component: Notepad,
+    defaultSize: {
+      width: 400,
+      height: 400,
+    },
+    defaultOffset: {
+      x: 70,
+      y: 60,
+    },
+    resizable: true,
+    minimized: false,
+    // maximized: window.innerWidth < 500,
+    multiInstance: true,
+  },
+  Notepad: {
+    header: {
+      icon: filmico,
+      title: 'Projections et diffusions à venir',
+    },
+    component: Projections,
     defaultSize: {
       width: 400,
       height: 400,
@@ -549,6 +631,7 @@ export {
   ErrorBox,
   MyComputer,
   Notepad,
+  Projections,
   Winamp,
   PhotosDuFilm,
   PhotosDuTournage,
@@ -558,4 +641,6 @@ export {
   Critiques,
   SolitaireGame,
   ContactForm,
+  BANDEANNONCE,
+  FilmComplet,
 };
