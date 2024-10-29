@@ -118,19 +118,22 @@ const Beretta = () => {
       captchaAnswer.trim().toLowerCase() ===
         currentQuestion.answer.trim().toLowerCase()
     ) {
-      setErrorMessage(''); // Réinitialiser le message d'erreur en cas de succès
       setCaptchaPassed(true);
+      setErrorMessage(''); // Réinitialiser le message d'erreur en cas de succès
+
+      // Appel direct à la fonction de changement d'étape après validation
+      handleNextStep();
     } else {
       setErrorMessage('Réponse incorrecte. Essayez encore !');
     }
   };
-  useEffect(() => {
-    if (captchaPassed) {
-      handleNextStep();
-    }
-  }, [captchaPassed, handleNextStep]);
+  // useEffect(() => {
+  //   if (captchaPassed) {
+  //     handleNextStep();
+  //   }
+  // }, [captchaPassed, handleNextStep]);
 
-  // Utiliser un useEffect pour détecter les changements dans captchaPassed
+  // // Utiliser un useEffect pour détecter les changements dans captchaPassed
   // useEffect(() => {
   //   if (captchaPassed) {
   //     handleNextStep();
