@@ -128,7 +128,7 @@ const Beretta = () => {
     if (captchaPassed) {
       handleNextStep();
     }
-  }, [captchaPassed]);
+  }, [captchaPassed, handleNextStep]);
 
   // Utiliser un useEffect pour détecter les changements dans captchaPassed
   // useEffect(() => {
