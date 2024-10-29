@@ -193,10 +193,10 @@ export const defaultIconState = [
     isFocus: false,
   },
   {
-    id: 10,
-    icon: paintLarge,
-    title: 'Paint',
-    component: Paint,
+    id: 16,
+    icon: playerico,
+    title: 'Voir le film!',
+    component: FilmComplet,
     isFocus: false,
   },
   {
@@ -276,11 +276,12 @@ export const defaultIconState = [
     component: Minesweeper,
     isFocus: false,
   },
+
   {
-    id: 16,
-    icon: playerico,
-    title: 'Voir le film!',
-    component: FilmComplet,
+    id: 10,
+    icon: paintLarge,
+    title: 'Paint',
+    component: Paint,
     isFocus: false,
   },
 ];
