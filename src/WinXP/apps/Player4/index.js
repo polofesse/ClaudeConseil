@@ -115,16 +115,20 @@ const Beretta = () => {
   const checkCaptcha = () => {
     if (
       currentQuestion &&
-      captchaAnswer.toLowerCase().trim() ===
-        currentQuestion.answer.toLowerCase().trim()
+      captchaAnswer.trim().toLowerCase() ===
+        currentQuestion.answer.trim().toLowerCase()
     ) {
-      setCaptchaPassed(true);
       setErrorMessage(''); // Réinitialiser le message d'erreur en cas de succès
-      handleNextStep(); // Appeler handleNextStep directement
+      setCaptchaPassed(true);
     } else {
       setErrorMessage('Réponse incorrecte. Essayez encore !');
     }
   };
+  useEffect(() => {
+    if (captchaPassed) {
+      handleNextStep();
+    }
+  }, [captchaPassed]);
 
   // Utiliser un useEffect pour détecter les changements dans captchaPassed
   // useEffect(() => {
@@ -159,7 +163,6 @@ const Beretta = () => {
               />
               <ButtonContainer>
                 <Button onClick={handleNextStep}>Continuer</Button>
-                <Button onClick={openSolitaire}>Annuler</Button>
               </ButtonContainer>
             </StepContainer>
           )}
@@ -175,7 +178,6 @@ const Beretta = () => {
               />
               <ButtonContainer>
                 <Button onClick={checkCaptcha}>Vérifier et Continuer</Button>
-                <Button onClick={openSolitaire}>Annuler</Button>
               </ButtonContainer>
               {errorMessage && (
                 <ErrorContainer>
