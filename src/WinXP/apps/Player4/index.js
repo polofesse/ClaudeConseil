@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import ReactPlayer from 'react-player/youtube';
 import styled from 'styled-components';
 
@@ -26,6 +26,7 @@ const Beretta = () => {
       setIsMobile(true);
     }
   }, []);
+
   useEffect(() => {
     const fetchTextData = async () => {
       try {
@@ -97,7 +98,7 @@ const Beretta = () => {
     fetchTextData();
   }, []);
 
-  const handleNextStep = () => {
+  const handleNextStep = useCallback(() => {
     if (step === 1 && !name) {
       alert('Veuillez entrer votre prénom !');
     } else if (step === 2 && !captchaPassed) {
@@ -105,7 +106,7 @@ const Beretta = () => {
     } else {
       setStep(step + 1);
     }
-  };
+  }, [step, name, captchaPassed]);
 
   const openSolitaire = () => {
     setShowSolitaire(true);
@@ -119,17 +120,18 @@ const Beretta = () => {
     ) {
       setCaptchaPassed(true);
       setErrorMessage(''); // Réinitialiser le message d'erreur en cas de succès
+      handleNextStep(); // Appeler handleNextStep directement
     } else {
       setErrorMessage('Réponse incorrecte. Essayez encore !');
     }
   };
 
   // Utiliser un useEffect pour détecter les changements dans captchaPassed
-  useEffect(() => {
-    if (captchaPassed) {
-      handleNextStep();
-    }
-  }, [captchaPassed]);
+  // useEffect(() => {
+  //   if (captchaPassed) {
+  //     handleNextStep();
+  //   }
+  // }, [captchaPassed, handleNextStep]);
 
   if (showSolitaire) {
     return <SolitaireGame />;
@@ -236,6 +238,9 @@ const SolitaireGame = () => {
     </FullScreenContainer>
   );
 };
+
+// Styles
+// ... (les styles existants restent inchangés)
 
 // Styles
 const Container = styled.div`
