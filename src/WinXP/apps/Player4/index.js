@@ -1,7 +1,15 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import ReactPlayer from 'react-player/youtube';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
+const fadeIn = keyframes`
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+`;
 const Beretta = () => {
   const [step, setStep] = useState(1);
   const [name, setName] = useState('');
@@ -223,11 +231,15 @@ const Beretta = () => {
       )}
       {step === 5 && (
         <ReactPlayerContainer>
-          <ReactPlayer
-            url="https://youtu.be/IWL6c3zkJ_E"
+          <iframe
+            src="https://player.vimeo.com/video/1024562790?title=0&amp;byline=0&amp;portrait=0&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
             width="100%"
             height="100%"
-          />
+            frameBorder="0"
+            allow="autoplay; fullscreen; picture-in-picture; clipboard-write"
+            allowFullScreen
+            title="BA Claude Conseil V4"
+          ></iframe>
         </ReactPlayerContainer>
       )}
     </Container>
@@ -324,6 +336,7 @@ const ReactPlayerContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  animation: fadeIn 5s ease-in-out; /* Animation progressive sur 1 seconde */
 `;
 const ErrorContainer = styled.div`
   display: flex;
