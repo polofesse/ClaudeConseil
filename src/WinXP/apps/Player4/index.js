@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 // import ReactPlayer from 'react-player/youtube';
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 
 // const fadeIn = keyframes`
 //   from {
