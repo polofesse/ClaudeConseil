@@ -1,15 +1,15 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import ReactPlayer from 'react-player/youtube';
+// import ReactPlayer from 'react-player/youtube';
 import styled, { keyframes } from 'styled-components';
 
-const fadeIn = keyframes`
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-`;
+// const fadeIn = keyframes`
+//   from {
+//     opacity: 0;
+//   }
+//   to {
+//     opacity: 1;
+//   }
+// `;
 const Beretta = () => {
   const [step, setStep] = useState(1);
   const [name, setName] = useState('');
