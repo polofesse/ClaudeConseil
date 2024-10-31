@@ -167,7 +167,7 @@ export const defaultIconState = [
   {
     id: 13,
     icon: mail,
-    title: 'Contact',
+    title: 'Contact & Newsletter',
     component: ContactForm,
     isFocus: false,
   },
@@ -404,8 +404,8 @@ export const appSettings = {
     },
     component: ContactForm,
     defaultSize: {
-      width: 500,
-      height: 470,
+      width: 450,
+      height: 440,
     },
     defaultOffset: {
       x: (window.innerWidth - window.innerWidth) / 2,
