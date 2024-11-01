@@ -7,7 +7,7 @@ import dropDownData from './dropDownData';
 export default function Prix_et_selections({ onClose }) {
   const [docText, setDocText] = useState('');
   const [wordWrap, setWordWrap] = useState(false);
-  const { t, i18n } = useTranslation(); // Hook de traduction pour obtenir la langue
+  const { i18n } = useTranslation(); // Hook de traduction pour obtenir la langue
 
   useEffect(() => {
     // Détermine le lien à utiliser en fonction de la langue actuelle
