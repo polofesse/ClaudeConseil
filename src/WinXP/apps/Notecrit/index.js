@@ -1,26 +1,28 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { useTranslation } from 'react-i18next';
 import { WindowDropDowns } from 'components';
 import dropDownData from './dropDownData';
 
 export default function Prix_et_selections({ onClose }) {
   const [docText, setDocText] = useState('');
   const [wordWrap, setWordWrap] = useState(false);
+  const { i18n } = useTranslation(); // Importer la langue actuelle
 
   useEffect(() => {
-    fetch(
-      'https://docs.google.com/document/d/e/2PACX-1vS8r3ae1Te6ktTnL4DKrWexddesnVb9D1OeJ4Ya-RtyqoAtn74cJhKPMPSBBgrSel1Bf4jCZsIsVlXc/pub',
-    )
+    // Lien basé sur la langue actuelle
+    const documentUrl =
+      i18n.language === 'en'
+        ? 'https://docs.google.com/document/d/e/2PACX-1vQKHIycxLYsj2PmOPabLA69FcwCqK1j6JkE6hsWAIHlrvaHqqIizYWA5_7sJYi2qC2qVjXnS_DDEAHM/pub'
+        : 'https://docs.google.com/document/d/e/2PACX-1vS8r3ae1Te6ktTnL4DKrWexddesnVb9D1OeJ4Ya-RtyqoAtn74cJhKPMPSBBgrSel1Bf4jCZsIsVlXc/pub';
+
+    fetch(documentUrl)
       .then(response => response.text())
       .then(data => {
-        // Parse the HTML content into a DOM structure
         const parser = new DOMParser();
         const doc = parser.parseFromString(data, 'text/html');
-
-        // Extract meaningful text content from the document, preserving headings and paragraphs
         let extractedText = '';
 
-        // Extract H1, H2, H3, and paragraphs
         doc.querySelectorAll('h1, h2, h3, p').forEach(element => {
           const tag = element.tagName.toLowerCase();
           const textContent = element.textContent.trim();
@@ -38,13 +40,12 @@ export default function Prix_et_selections({ onClose }) {
           }
         });
 
-        // Set the extracted text to state
         setDocText(extractedText);
       })
       .catch(error =>
         console.error('Erreur lors du chargement du document :', error),
       );
-  }, []);
+  }, [i18n.language]); // Déclencher l'effet lorsqu'on change de langue
 
   function onClickOptionItem(item) {
     switch (item) {
@@ -64,7 +65,6 @@ export default function Prix_et_selections({ onClose }) {
     }
   }
 
-  // Function to render text with headings and paragraphs
   const renderText = text => {
     return text.split('\n').map((line, index) => {
       if (line.startsWith('### '))
@@ -86,6 +86,8 @@ export default function Prix_et_selections({ onClose }) {
     </Div>
   );
 }
+
+// Style inchangé
 
 const Div = styled.div`
   height: 100%;

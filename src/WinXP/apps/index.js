@@ -35,6 +35,10 @@ import SolitaireGame from './Solitaire/Solitaire';
 import spiderico from 'assets/windowsIcons/iconsolitaire.png';
 import filmico from 'assets/windowsIcons/filmico.png';
 import baico from 'assets/windowsIcons/baico.png';
+import englishico from 'assets/windowsIcons/english.png';
+import English from './English';
+import frenchico from 'assets/windowsIcons/french.png';
+import French from './French';
 
 const gen = () => {
   let id = -1;
@@ -284,6 +288,20 @@ export const defaultIconState = [
     component: Paint,
     isFocus: false,
   },
+  {
+    id: 17,
+    icon: englishico,
+    title: 'Switch to English',
+    component: English,
+    isFocus: false,
+  },
+  {
+    id: 18,
+    icon: frenchico,
+    title: 'Basculer en français',
+    component: French,
+    isFocus: false,
+  },
 ];
 
 export const appSettings = {
@@ -306,6 +324,44 @@ export const appSettings = {
   //   maximized: window.innerWidth < 800,
   //   multiInstance: true,
   // },
+  English: {
+    header: {
+      icon: mine,
+      title: 'Minesweeper',
+    },
+    component: English,
+    defaultSize: {
+      width: 0,
+      height: 0,
+    },
+    defaultOffset: {
+      x: 190,
+      y: 180,
+    },
+    resizable: false,
+    minimized: false,
+    maximized: false,
+    multiInstance: true,
+  },
+  French: {
+    header: {
+      icon: mine,
+      title: 'French',
+    },
+    component: French,
+    defaultSize: {
+      width: 0,
+      height: 0,
+    },
+    defaultOffset: {
+      x: 190,
+      y: 180,
+    },
+    resizable: false,
+    minimized: false,
+    maximized: false,
+    multiInstance: true,
+  },
   Minesweeper: {
     header: {
       icon: mine,
@@ -644,4 +700,6 @@ export {
   ContactForm,
   BANDEANNONCE,
   FilmComplet,
+  English,
+  French,
 };

@@ -1,7 +1,7 @@
 import React, { useReducer, useRef, useCallback } from 'react';
+import { useTranslation } from 'react-i18next'; // Import du hook de traduction
 import styled, { keyframes } from 'styled-components';
 import useMouse from 'react-use/lib/useMouse';
-
 import {
   ADD_APP,
   DEL_APP,
@@ -176,6 +176,7 @@ const reducer = (state, action = { type: '' }) => {
 };
 
 function WinXP() {
+  const { t } = useTranslation(); // Hook de traduction
   const [state, dispatch] = useReducer(reducer, initState);
   const ref = useRef(null);
   const mouse = useMouse(ref);
@@ -306,7 +307,10 @@ function WinXP() {
   function onModalClose() {
     dispatch({ type: CANCEL_POWER_OFF });
   }
-
+  const iconsWithTranslatedTitles = state.icons.map(icon => ({
+    ...icon,
+    title: t(icon.title), // Traduction du titre
+  }));
   return (
     <Container
       ref={ref}
@@ -317,9 +321,9 @@ function WinXP() {
       state={state.powerState}
     >
       <Icons
-        icons={state.icons}
+        icons={iconsWithTranslatedTitles}
         onMouseDown={onMouseDownIcon}
-        onTouchStart={onMouseDownIcon} // Gérer les interactions tactiles
+        onTouchStart={onMouseDownIcon}
         onDoubleClick={onDoubleClickIcon}
         displayFocus={state.focusing === FOCUSING.ICON}
         appSettings={appSettings}

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import ReactPlayer from 'react-player/youtube';
+import ReactPlayer from 'react-player';
 import styled from 'styled-components';
+import { useTranslation } from 'react-i18next';
 
 const FilmComplet = () => {
   const [step, setStep] = useState(1);
@@ -20,6 +21,7 @@ const FilmComplet = () => {
   });
   const [showSolitaire, setShowSolitaire] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const { i18n } = useTranslation(); // Ajoutez ceci pour gérer la langue
 
   useEffect(() => {
     const userAgent = navigator.userAgent || navigator.vendor || window.opera;
@@ -31,18 +33,17 @@ const FilmComplet = () => {
   useEffect(() => {
     const fetchTextData = async () => {
       try {
-        const response = await fetch(
-          'https://docs.google.com/document/d/e/2PACX-1vT4xiLJstLDnXFPoliGUdduyDctBi3knkcNK_ApJ2yDmcHjxfYR6jzfRKIedy7bdb5BQXLc2wf5UIF6/pub',
-        );
-        const data = await response.text();
+        // Choisissez l'URL en fonction de la langue actuelle
+        const documentUrl =
+          i18n.language === 'en'
+            ? 'https://docs.google.com/document/d/e/2PACX-1vSPx3QbG1g7oH2WnKoajEf7jKiRAR7Ep5NGKWeS23sB6f17-gIUO8EHp1KRBBjutdM6dzPdFRHKI2ze/pub'
+            : 'https://docs.google.com/document/d/e/2PACX-1vT4xiLJstLDnXFPoliGUdduyDctBi3knkcNK_ApJ2yDmcHjxfYR6jzfRKIedy7bdb5BQXLc2wf5UIF6/pub';
 
+        const data = await (await fetch(documentUrl)).text();
         const parser = new DOMParser();
         const doc = parser.parseFromString(data, 'text/html');
+        let extractedText = '';
 
-        // Log pour vérifier la structure du document
-        console.log('Document:', doc);
-
-        // Recherche des paragraphes contenant les sections identifiées par un "#"
         const paragraphs = Array.from(doc.querySelectorAll('p'));
         const newTexts = {
           intro: '',
@@ -56,8 +57,6 @@ const FilmComplet = () => {
         let currentSection = '';
         paragraphs.forEach(p => {
           const text = p.textContent.trim();
-
-          // Identifier les sections par le texte des balises <p> commençant par #
           if (text.startsWith('# Introduction')) {
             currentSection = 'intro';
             newTexts.intro = p.nextElementSibling?.textContent || '';
@@ -82,7 +81,7 @@ const FilmComplet = () => {
         });
 
         if (newTexts.questions.length === 0) {
-          console.error('Aucune question trouvée dans le document.');
+          console.error('No questions found in the document.');
         }
 
         setTexts(newTexts);
@@ -92,18 +91,18 @@ const FilmComplet = () => {
           ],
         );
       } catch (error) {
-        console.error('Erreur lors du chargement du texte :', error);
+        console.error('Error loading text:', error);
       }
     };
 
     fetchTextData();
-  }, []);
+  }, [i18n.language]); // Dépendance sur la langue
 
   const handleNextStep = useCallback(() => {
     if (step === 1 && !name) {
-      alert('Veuillez entrer votre prénom !');
+      alert('Please enter your name!');
     } else if (step === 2 && !captchaPassed) {
-      alert('Veuillez répondre correctement au quiz !');
+      alert('Please answer the quiz correctly!');
     } else {
       setStep(step + 1);
     }
@@ -120,35 +119,35 @@ const FilmComplet = () => {
         currentQuestion.answer.toLowerCase().trim()
     ) {
       setCaptchaPassed(true);
-      setCaptchaSuccess(true); // Marquer la tentative réussie
-      setErrorMessage(''); // Réinitialiser le message d'erreur en cas de succès
+      setCaptchaSuccess(true);
+      setErrorMessage('');
     } else {
-      setErrorMessage('Réponse incorrecte. Essayez encore !');
+      setErrorMessage('Incorrect answer. Try again!');
     }
   };
 
-  // Utiliser un useEffect pour détecter les changements dans captchaPassed
-  // useEffect(() => {
-  //   if (captchaPassed) {
-  //     handleNextStep();
-  //   }
-  // }, [captchaPassed, handleNextStep]);
   useEffect(() => {
     if (captchaSuccess) {
       handleNextStep();
-      setCaptchaSuccess(false); // Réinitialiser l'état après avoir avancé à l'étape suivante
+      setCaptchaSuccess(false);
     }
   }, [captchaSuccess, handleNextStep]);
+
   if (showSolitaire) {
     return <SolitaireGame />;
   }
+
+  // Définir l'URL de la vidéo selon la langue
+  const videoUrl =
+    i18n.language === 'en'
+      ? 'URL_OF_THE_ENGLISH_VIMEO_VIDEO'
+      : 'https://youtu.be/IWL6c3zkJ_E';
 
   return (
     <Container>
       {isMobile && step !== 5 && (
         <MobileWarning>
-          Attention : Il est déconseillé de regarder ce film sur un appareil
-          mobile.
+          Warning: Watching this film on a mobile device is not recommended.
         </MobileWarning>
       )}
       {step < 5 && (
@@ -161,11 +160,11 @@ const FilmComplet = () => {
                 type="text"
                 value={name}
                 onChange={e => setName(e.target.value)}
-                placeholder="Entrez votre prénom ici"
+                placeholder="Enter your name here"
               />
               <ButtonContainer>
-                <Button onClick={handleNextStep}>Continuer</Button>
-                <Button onClick={openSolitaire}>Annuler</Button>
+                <Button onClick={handleNextStep}>Continue</Button>
+                <Button onClick={openSolitaire}>Cancel</Button>
               </ButtonContainer>
             </StepContainer>
           )}
@@ -177,17 +176,17 @@ const FilmComplet = () => {
                 type="text"
                 value={captchaAnswer}
                 onChange={e => setCaptchaAnswer(e.target.value)}
-                placeholder="Entrez votre réponse ici"
+                placeholder="Enter your answer here"
               />
               <ButtonContainer>
-                <Button onClick={checkCaptcha}>Vérifier et Continuer</Button>
-                <Button onClick={openSolitaire}>Annuler</Button>
+                <Button onClick={checkCaptcha}>Verify and Continue</Button>
+                <Button onClick={openSolitaire}>Cancel</Button>
               </ButtonContainer>
               {errorMessage && (
                 <ErrorContainer>
                   <ErrorIcon
                     src="https://i.imgur.com/5DLQGeM.png"
-                    alt="Erreur"
+                    alt="Error"
                   />
                   <ErrorText>{errorMessage}</ErrorText>
                 </ErrorContainer>
@@ -198,21 +197,21 @@ const FilmComplet = () => {
             <StepContainer>
               <Title>{texts.comfortQuestion.replace('{name}', name)}</Title>
               <Text>
-                Prêt.e.s à voir un film de 24 minutes, dans le calme, seul.e ou
-                avec des amis ?
+                Ready to watch a 24-minute movie in peace, alone or with
+                friends?
               </Text>
               <ButtonContainer>
-                <Button onClick={handleNextStep}>Oui</Button>
-                <Button onClick={openSolitaire}>Non</Button>
+                <Button onClick={handleNextStep}>Yes</Button>
+                <Button onClick={openSolitaire}>No</Button>
               </ButtonContainer>
             </StepContainer>
           )}
           {step === 4 && (
             <StepContainer>
-              <Title>Les Mystérieuses Aventures de Claude Conseil</Title>
+              <Title>The Mysterious Adventures of Claude Conseil</Title>
               <Text>{texts.finalMessage.replace('{name}', name)}</Text>
               <ButtonContainer>
-                <Button onClick={handleNextStep}>Suivant</Button>
+                <Button onClick={handleNextStep}>Next</Button>
               </ButtonContainer>
             </StepContainer>
           )}
@@ -220,33 +219,14 @@ const FilmComplet = () => {
       )}
       {step === 5 && (
         <ReactPlayerContainer>
-          <ReactPlayer
-            url="https://youtu.be/IWL6c3zkJ_E"
-            width="100%"
-            height="100%"
-          />
+          <ReactPlayer url={videoUrl} width="100%" height="100%" />
         </ReactPlayerContainer>
       )}
     </Container>
   );
 };
 
-const SolitaireGame = () => {
-  return (
-    <FullScreenContainer>
-      <iframe
-        src="https://www.youtube.com/embed/IWL6c3zkJ_E?autoplay=1" // URL en mode embed avec lecture automatique
-        width="100%"
-        height="100%"
-        frameBorder="0"
-        allow="autoplay; fullscreen"
-        allowFullScreen
-        style={{ border: 'none' }}
-        title="YouTube Video"
-      ></iframe>
-    </FullScreenContainer>
-  );
-};
+// Reste des styles inchangés
 
 // Styles
 // ... (les styles existants restent inchangés)

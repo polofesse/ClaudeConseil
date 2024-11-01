@@ -1,26 +1,29 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { useTranslation } from 'react-i18next'; // Import du hook de traduction
 import { WindowDropDowns } from 'components';
 import dropDownData from './dropDownData';
 
 export default function Prix_et_selections({ onClose }) {
   const [docText, setDocText] = useState('');
   const [wordWrap, setWordWrap] = useState(false);
+  const { t, i18n } = useTranslation(); // Hook de traduction pour obtenir la langue
 
   useEffect(() => {
-    fetch(
-      'https://docs.google.com/document/d/e/2PACX-1vT3lwCXXX6AU1gOvGAV-e_MBaPHNvtf68Z1qW-on4gn5C48I13emfJr9mbHMHCjd6Vc9N69-vxv4P4R/pub',
-    )
+    // Détermine le lien à utiliser en fonction de la langue actuelle
+    const documentUrl =
+      i18n.language === 'en'
+        ? 'https://docs.google.com/document/d/e/2PACX-1vSccKM5TGYcskrQa0YyDQz1EYbzXT_uuVzGGVmu4rdsD9O06H5P7G9kfsRx4ksHi3dmA_wXmIkruqXv/pub'
+        : 'https://docs.google.com/document/d/e/2PACX-1vT3lwCXXX6AU1gOvGAV-e_MBaPHNvtf68Z1qW-on4gn5C48I13emfJr9mbHMHCjd6Vc9N69-vxv4P4R/pub';
+
+    fetch(documentUrl)
       .then(response => response.text())
       .then(data => {
-        // Parse the HTML content into a DOM structure
         const parser = new DOMParser();
         const doc = parser.parseFromString(data, 'text/html');
 
-        // Extract meaningful text content from the document, preserving headings and paragraphs
         let extractedText = '';
 
-        // Extract H1, H2, H3, and paragraphs
         doc.querySelectorAll('h1, h2, h3, p').forEach(element => {
           const tag = element.tagName.toLowerCase();
           const textContent = element.textContent.trim();
@@ -38,13 +41,12 @@ export default function Prix_et_selections({ onClose }) {
           }
         });
 
-        // Set the extracted text to state
         setDocText(extractedText);
       })
       .catch(error =>
         console.error('Erreur lors du chargement du document :', error),
       );
-  }, []);
+  }, [i18n.language]); // Dépendance sur la langue pour déclencher le fetch lors du changement de langue
 
   function onClickOptionItem(item) {
     switch (item) {
@@ -64,7 +66,6 @@ export default function Prix_et_selections({ onClose }) {
     }
   }
 
-  // Function to render text with headings and paragraphs
   const renderText = text => {
     return text.split('\n').map((line, index) => {
       if (line.startsWith('### '))

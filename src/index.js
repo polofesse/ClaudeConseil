@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import './i18n'; // Assurez-vous que cette ligne est dans votre point d'entrée, comme `index.js` ou `App.js`
 
 import './index.css';
 import 'assets/clear.css';

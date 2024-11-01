@@ -1,20 +1,15 @@
 import React, { useState, useEffect, useCallback } from 'react';
-// import ReactPlayer from 'react-player/youtube';
+import ReactPlayer from 'react-player';
 import styled from 'styled-components';
+import { useTranslation } from 'react-i18next';
 
-// const fadeIn = keyframes`
-//   from {
-//     opacity: 0;
-//   }
-//   to {
-//     opacity: 1;
-//   }
-// `;
 const Beretta = () => {
+  const { t, i18n } = useTranslation();
   const [step, setStep] = useState(1);
   const [name, setName] = useState('');
   const [captchaPassed, setCaptchaPassed] = useState(false);
   const [captchaAnswer, setCaptchaAnswer] = useState('');
+  const [captchaSuccess, setCaptchaSuccess] = useState(false);
   const [currentQuestion, setCurrentQuestion] = useState(null);
   const [errorMessage, setErrorMessage] = useState('');
   const [texts, setTexts] = useState({
@@ -38,18 +33,17 @@ const Beretta = () => {
   useEffect(() => {
     const fetchTextData = async () => {
       try {
-        const response = await fetch(
-          'https://docs.google.com/document/d/e/2PACX-1vT4xiLJstLDnXFPoliGUdduyDctBi3knkcNK_ApJ2yDmcHjxfYR6jzfRKIedy7bdb5BQXLc2wf5UIF6/pub',
-        );
+        const documentUrl =
+          i18n.language === 'en'
+            ? 'https://docs.google.com/document/d/e/2PACX-1vT4xiLJstLDnXFPoliGUdduyDctBi3knkcNK_ApJ2yDmcHjxfYR6jzfRKIedy7bdb5BQXLc2wf5UIF6/pub'
+            : 'https://docs.google.com/document/d/e/2PACX-1vSPx3QbG1g7oH2WnKoajEf7jKiRAR7Ep5NGKWeS23sB6f17-gIUO8EHp1KRBBjutdM6dzPdFRHKI2ze/pub';
+
+        const response = await fetch(documentUrl);
         const data = await response.text();
 
         const parser = new DOMParser();
         const doc = parser.parseFromString(data, 'text/html');
 
-        // Log pour vérifier la structure du document
-        console.log('Document:', doc);
-
-        // Recherche des paragraphes contenant les sections identifiées par un "#"
         const paragraphs = Array.from(doc.querySelectorAll('p'));
         const newTexts = {
           intro: '',
@@ -64,7 +58,6 @@ const Beretta = () => {
         paragraphs.forEach(p => {
           const text = p.textContent.trim();
 
-          // Identifier les sections par le texte des balises <p> commençant par #
           if (text.startsWith('# Introduction')) {
             currentSection = 'intro';
             newTexts.intro = p.nextElementSibling?.textContent || '';
@@ -88,10 +81,6 @@ const Beretta = () => {
           }
         });
 
-        if (newTexts.questions.length === 0) {
-          console.error('Aucune question trouvée dans le document.');
-        }
-
         setTexts(newTexts);
         setCurrentQuestion(
           newTexts.questions[
@@ -104,17 +93,17 @@ const Beretta = () => {
     };
 
     fetchTextData();
-  }, []);
+  }, [i18n.language]);
 
   const handleNextStep = useCallback(() => {
     if (step === 1 && !name) {
-      alert('Veuillez entrer votre prénom !');
+      alert(t('Veuillez entrer votre prénom !'));
     } else if (step === 2 && !captchaPassed) {
-      alert('Veuillez répondre correctement au quiz !');
+      alert(t('Veuillez répondre correctement au quiz !'));
     } else {
       setStep(step + 1);
     }
-  }, [step, name, captchaPassed]);
+  }, [step, name, captchaPassed, t]);
 
   const openSolitaire = () => {
     setShowSolitaire(true);
@@ -123,34 +112,23 @@ const Beretta = () => {
   const checkCaptcha = () => {
     if (
       currentQuestion &&
-      captchaAnswer.trim().toLowerCase() ===
-        currentQuestion.answer.trim().toLowerCase()
+      captchaAnswer.toLowerCase().trim() ===
+        currentQuestion.answer.toLowerCase().trim()
     ) {
       setCaptchaPassed(true);
-      setErrorMessage(''); // Réinitialiser le message d'erreur en cas de succès
+      setCaptchaSuccess(true);
+      setErrorMessage('');
     } else {
-      setErrorMessage('Réponse incorrecte. Essayez encore !');
+      setErrorMessage(t('Réponse incorrecte. Essayez encore !'));
     }
   };
+
   useEffect(() => {
-    if (captchaPassed) {
+    if (captchaSuccess) {
       handleNextStep();
-      setCaptchaPassed(false); // Réinitialiser l'état pour éviter des appels répétés
+      setCaptchaSuccess(false);
     }
-  }, [captchaPassed, handleNextStep]);
-
-  // useEffect(() => {
-  //   if (captchaPassed) {
-  //     handleNextStep();
-  //   }
-  // }, [captchaPassed, handleNextStep]);
-
-  // // Utiliser un useEffect pour détecter les changements dans captchaPassed
-  // useEffect(() => {
-  //   if (captchaPassed) {
-  //     handleNextStep();
-  //   }
-  // }, [captchaPassed, handleNextStep]);
+  }, [captchaSuccess, handleNextStep]);
 
   if (showSolitaire) {
     return <SolitaireGame />;
@@ -160,8 +138,9 @@ const Beretta = () => {
     <Container>
       {isMobile && step !== 5 && (
         <MobileWarning>
-          Attention : Il est déconseillé de regarder ce film sur un appareil
-          mobile.
+          {t(
+            'Attention : Il est déconseillé de regarder ce film sur un appareil mobile.',
+          )}
         </MobileWarning>
       )}
       {step < 5 && (
@@ -174,10 +153,10 @@ const Beretta = () => {
                 type="text"
                 value={name}
                 onChange={e => setName(e.target.value)}
-                placeholder="Entrez votre prénom ici"
+                placeholder={t('Entrez votre prénom ici')}
               />
               <ButtonContainer>
-                <Button onClick={handleNextStep}>Continuer</Button>
+                <Button onClick={handleNextStep}>{t('Continuer')}</Button>
               </ButtonContainer>
             </StepContainer>
           )}
@@ -189,16 +168,18 @@ const Beretta = () => {
                 type="text"
                 value={captchaAnswer}
                 onChange={e => setCaptchaAnswer(e.target.value)}
-                placeholder="Entrez votre réponse ici"
+                placeholder={t('Entrez votre réponse ici')}
               />
               <ButtonContainer>
-                <Button onClick={checkCaptcha}>Vérifier et Continuer</Button>
+                <Button onClick={checkCaptcha}>
+                  {t('Vérifier et Continuer')}
+                </Button>
               </ButtonContainer>
               {errorMessage && (
                 <ErrorContainer>
                   <ErrorIcon
                     src="https://i.imgur.com/5DLQGeM.png"
-                    alt="Erreur"
+                    alt={t('Erreur')}
                   />
                   <ErrorText>{errorMessage}</ErrorText>
                 </ErrorContainer>
@@ -209,21 +190,22 @@ const Beretta = () => {
             <StepContainer>
               <Title>{texts.comfortQuestion.replace('{name}', name)}</Title>
               <Text>
-                Prêt.e.s à voir un film de 24 minutes, dans le calme, seul.e ou
-                avec des amis ?
+                {t(
+                  'Prêt.e.s à voir un film de 24 minutes, dans le calme, seul.e ou avec des amis ?',
+                )}
               </Text>
               <ButtonContainer>
-                <Button onClick={handleNextStep}>Oui</Button>
-                <Button onClick={openSolitaire}>Non</Button>
+                <Button onClick={handleNextStep}>{t('Oui')}</Button>
+                <Button onClick={openSolitaire}>{t('Non')}</Button>
               </ButtonContainer>
             </StepContainer>
           )}
           {step === 4 && (
             <StepContainer>
-              <Title>Les Mystérieuses Aventures de Claude Conseil</Title>
+              <Title>{t('Les Mystérieuses Aventures de Claude Conseil')}</Title>
               <Text>{texts.finalMessage.replace('{name}', name)}</Text>
               <ButtonContainer>
-                <Button onClick={handleNextStep}>Suivant</Button>
+                <Button onClick={handleNextStep}>{t('Suivant')}</Button>
               </ButtonContainer>
             </StepContainer>
           )}
@@ -231,15 +213,15 @@ const Beretta = () => {
       )}
       {step === 5 && (
         <ReactPlayerContainer>
-          <iframe
-            src="https://player.vimeo.com/video/1024562790?title=0&amp;byline=0&amp;portrait=0&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
+          <ReactPlayer
+            url={
+              i18n.language === 'en'
+                ? 'English_Vimeo_URL'
+                : 'https://youtu.be/IWL6c3zkJ_E'
+            }
             width="100%"
             height="100%"
-            frameBorder="0"
-            allow="autoplay; fullscreen; picture-in-picture; clipboard-write"
-            allowFullScreen
-            title="BA Claude Conseil V4"
-          ></iframe>
+          />
         </ReactPlayerContainer>
       )}
     </Container>
@@ -260,7 +242,8 @@ const SolitaireGame = () => {
   );
 };
 
-// Styles
+// Ajoutez ici vos styles existants...
+
 // ... (les styles existants restent inchangés)
 
 // Styles
