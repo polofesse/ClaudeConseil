@@ -34,6 +34,13 @@ function Icons({
       {icons.map(icon => (
         <StyledIcon
           key={icon.id}
+          className={
+            icon.isLanguageIcon
+              ? `language-icon ${
+                  icon.id === 17 ? 'icon-en' : icon.id === 18 ? 'icon-fr' : ''
+                }`
+              : ''
+          }
           {...icon}
           displayFocus={displayFocus}
           onMouseDown={onMouseDown}
@@ -103,6 +110,23 @@ const StyledIcon = styled(Icon)`
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  &.language-icon {
+    width: 30px;
+    height: 30px;
+    position: fixed; /* Assure que la position est relative à la fenêtre */
+    bottom: 50px; /* Positionne en bas */
+    margin: 0;
+  }
+
+  &.icon-en {
+    right: 10px; /* Positionne l'icône anglaise */
+  }
+
+  &.icon-fr {
+    right: 40px; /* Positionne l'icône française */
+  }
+
   &__text__container {
     width: 100%;
     font-size: 12px;
@@ -123,6 +147,7 @@ const StyledIcon = styled(Icon)`
       flex-grow: 1;
     }
   }
+
   &__text {
     padding: 0 3px 2px;
     background-color: ${({ isFocus, displayFocus }) =>
@@ -130,12 +155,14 @@ const StyledIcon = styled(Icon)`
     text-align: center;
     flex-shrink: 1;
   }
+
   &__img__container {
     width: 40px;
     height: 40px;
     filter: ${({ isFocus, displayFocus }) =>
       isFocus && displayFocus ? 'drop-shadow(0 0 blue)' : ''};
   }
+
   &__img {
     width: 45px;
     height: 45px;

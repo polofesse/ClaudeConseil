@@ -196,13 +196,13 @@ export const defaultIconState = [
     component: Winamp,
     isFocus: false,
   },
-  {
-    id: 16,
-    icon: playerico,
-    title: 'Voir le film!',
-    component: FilmComplet,
-    isFocus: false,
-  },
+  // {
+  //   id: 16,
+  //   icon: playerico,
+  //   title: 'Voir le film!',
+  //   component: FilmComplet,
+  //   isFocus: false,
+  // },
   {
     id: 8,
     icon: generiqueIco,
@@ -291,16 +291,18 @@ export const defaultIconState = [
   {
     id: 17,
     icon: englishico,
-    title: 'Switch to English',
+    title: '',
     component: English,
     isFocus: false,
+    isLanguageIcon: true,
   },
   {
     id: 18,
     icon: frenchico,
-    title: 'Basculer en français',
+    title: '',
     component: French,
     isFocus: false,
+    isLanguageIcon: true,
   },
 ];
 
