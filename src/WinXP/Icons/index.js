@@ -1,20 +1,25 @@
 import React, { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
+import { useTranslation } from 'react-i18next';
 
 function Icons({
   icons,
   onMouseDown,
-  onDoubleClick,
+  setSelectedIcons,
   displayFocus,
   mouse,
   selecting,
-  setSelectedIcons,
 }) {
   const [iconsRect, setIconsRect] = useState([]);
+  const [message, setMessage] = useState('');
+
+  const { i18n } = useTranslation(); // Import du hook de traduction
+
   function measure(rect) {
     if (iconsRect.find(r => r.id === rect.id)) return;
     setIconsRect(iconsRect => [...iconsRect, rect]);
   }
+
   useEffect(() => {
     if (!selecting) return;
     const sx = Math.min(selecting.x, mouse.docX);
@@ -29,6 +34,24 @@ function Icons({
       .map(icon => icon.id);
     setSelectedIcons(selectedIds);
   }, [iconsRect, setSelectedIcons, selecting, mouse.docX, mouse.docY]);
+
+  function handleClickIcon(iconId) {
+    if (iconId === 17) {
+      // ID pour l'icône anglaise
+      i18n.changeLanguage('en');
+      setMessage('Language switched to English');
+    } else if (iconId === 18) {
+      // ID pour l'icône française
+      i18n.changeLanguage('fr');
+      setMessage('Langue changée en français');
+    }
+
+    // Affiche le message pendant 2 secondes
+    setTimeout(() => {
+      setMessage('');
+    }, 2000);
+  }
+
   return (
     <IconsContainer>
       {icons.map(icon => (
@@ -41,13 +64,14 @@ function Icons({
                 }`
               : ''
           }
+          onClick={() => handleClickIcon(icon.id)} // Utilise un simple clic
           {...icon}
           displayFocus={displayFocus}
           onMouseDown={onMouseDown}
-          onDoubleClick={onDoubleClick}
           measure={measure}
         />
       ))}
+      {message && <Message>{message}</Message>}
     </IconsContainer>
   );
 }
@@ -55,19 +79,16 @@ function Icons({
 function Icon({
   title,
   onMouseDown,
-  onDoubleClick,
   icon,
   className,
   id,
   component,
   measure,
+  onClick, // Ajoute la propriété onClick
 }) {
   const ref = useRef(null);
   function _onMouseDown() {
     onMouseDown(id);
-  }
-  function _onDoubleClick() {
-    onDoubleClick(component);
   }
   useEffect(() => {
     const target = ref.current;
@@ -81,7 +102,7 @@ function Icon({
     <div
       className={className}
       onMouseDown={_onMouseDown}
-      onDoubleClick={_onDoubleClick}
+      onClick={onClick} // Ajoute l'événement onClick au conteneur de l'icône
       ref={ref}
     >
       <div className={`${className}__img__container`}>
@@ -96,9 +117,9 @@ function Icon({
 
 const IconsContainer = styled.div`
   display: grid;
-  grid-template-columns: repeat(3, 1fr); // Crée deux colonnes de taille égale
-  align-items: top; // Centre les éléments verticalement dans chaque cellule
-  gap: 6px; // Espacement entre les icônes
+  grid-template-columns: repeat(3, 1fr); // Adaptation de la grille des icônes
+  align-items: top;
+  gap: 6px;
   position: absolute;
   margin-top: 20px;
   margin-left: 30px;
@@ -114,17 +135,17 @@ const StyledIcon = styled(Icon)`
   &.language-icon {
     width: 30px;
     height: 30px;
-    position: fixed; /* Assure que la position est relative à la fenêtre */
-    bottom: 50px; /* Positionne en bas */
+    position: fixed; /* Position relative à la fenêtre */
+    bottom: 50px; /* Position de base */
     margin: 0;
   }
 
   &.icon-en {
-    right: 10px; /* Positionne l'icône anglaise */
+    right: 10px; /* Position de l'icône anglaise */
   }
 
   &.icon-fr {
-    right: 40px; /* Positionne l'icône française */
+    right: 40px; /* Position de l'icône française */
   }
 
   &__text__container {
@@ -135,17 +156,6 @@ const StyledIcon = styled(Icon)`
     margin-top: 5px;
     display: flex;
     justify-content: center;
-
-    &:before {
-      content: '';
-      display: block;
-      flex-grow: 1;
-    }
-    &:after {
-      content: '';
-      display: block;
-      flex-grow: 1;
-    }
   }
 
   &__text {
@@ -169,6 +179,17 @@ const StyledIcon = styled(Icon)`
     opacity: ${({ isFocus, displayFocus }) =>
       isFocus && displayFocus ? 0.5 : 1};
   }
+`;
+const Message = styled.div`
+  position: fixed;
+  bottom: 90px; /* Ajuste cette valeur pour la position exacte */
+  right: 50px; /* Ajuste cette valeur pour l'alignement horizontal */
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  z-index: 1000;
 `;
 
 export default Icons;
