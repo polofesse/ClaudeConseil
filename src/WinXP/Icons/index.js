@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 function Icons({
   icons,
   onMouseDown,
+  onDoubleClick, // Ajout du paramètre onDoubleClick
   setSelectedIcons,
   displayFocus,
   mouse,
@@ -64,7 +65,8 @@ function Icons({
                 }`
               : ''
           }
-          onClick={() => handleClickIcon(icon.id)} // Utilise un simple clic
+          onClick={() => handleClickIcon(icon.id)} // Utilise un simple clic pour changer la langue
+          onDoubleClick={() => onDoubleClick(icon.component)} // Ajoute le double-clic pour ouvrir l'application
           {...icon}
           displayFocus={displayFocus}
           onMouseDown={onMouseDown}
@@ -85,6 +87,7 @@ function Icon({
   component,
   measure,
   onClick, // Ajoute la propriété onClick
+  onDoubleClick, // Ajoute la propriété onDoubleClick
 }) {
   const ref = useRef(null);
   function _onMouseDown() {
@@ -103,6 +106,7 @@ function Icon({
       className={className}
       onMouseDown={_onMouseDown}
       onClick={onClick} // Ajoute l'événement onClick au conteneur de l'icône
+      onDoubleClick={onDoubleClick} // Ajoute l'événement onDoubleClick
       ref={ref}
     >
       <div className={`${className}__img__container`}>
@@ -180,6 +184,7 @@ const StyledIcon = styled(Icon)`
       isFocus && displayFocus ? 0.5 : 1};
   }
 `;
+
 const Message = styled.div`
   position: fixed;
   bottom: 90px; /* Ajuste cette valeur pour la position exacte */
