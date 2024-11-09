@@ -40,6 +40,39 @@
       gtag('config', 'G-SGHXTLN7VW');
     </script>
   </head>
+  <style>
+          /* Fond blanc opaque */
+          #background-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: white;
+        opacity: 1;
+        transition: opacity 0.5s ease;
+        z-index: 999; /* Placé derrière l'image */
+      }
+    /* Style pour l'image d'introduction */
+    #intro-image {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 1;
+      transition: opacity 0.5s ease;
+      z-index: 1000;
+    }
+    #intro-image img {
+      max-width: 80%;
+      max-height: 80%;
+    }
+  </style>
   <body>
     <noscript>Vous devez activer JavaScript pour exécuter cette application.</noscript>
     <div id="root"></div>
@@ -53,7 +86,47 @@
       Pour commencer le développement, exécutez `npm start` ou `yarn start`.
       Pour créer un bundle de production, utilisez `npm run build` ou `yarn build`.
     -->
-  </body>
+          <!-- Fond blanc opaque -->
+          <style>
+            /* Fond noir pour l'introduction */
+            #intro-overlay {
+              position: fixed;
+              top: 0;
+              left: 0;
+              width: 100%;
+              height: 100%;
+              background: black; /* Fond noir */
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              opacity: 1;
+              transition: opacity 0.5s ease;
+              z-index: 1000;
+            }
+            #intro-overlay img {
+              max-width: 80%;
+              max-height: 80%;
+            }
+          </style>
+        </head>
+        <body>
+      
+          <!-- Superposition pour l'introduction -->
+          <div id="intro-overlay">
+            <img src="https://imgur.com/YjyjiRj.png" alt="Introduction Image">
+          </div>
+      
+          <script>
+            window.addEventListener("load", function() {
+              // Disparition du fond noir et de l'image après 3 secondes
+              setTimeout(function() {
+                document.getElementById("intro-overlay").style.opacity = "0";
+                setTimeout(function() {
+                  document.getElementById("intro-overlay").style.display = "none";
+                }, 500); // Délai pour compléter la transition d'opacité
+              }, 3000); // Durée d'affichage : 3 secondes
+            });
+          </script>
 </html>
 
 
