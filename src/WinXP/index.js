@@ -226,7 +226,7 @@ function WinXP() {
       if (notepadApp && notepadApp.minimized) {
         dispatch({ type: FOCUS_APP, payload: notepadApp.id });
       }
-    }, 6000);
+    }, 1000);
 
     return () => clearTimeout(timer);
   }, [state.apps]);
