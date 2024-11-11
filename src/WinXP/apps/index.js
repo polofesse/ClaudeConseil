@@ -50,20 +50,6 @@ const gen = () => {
 const genId = gen();
 const genIndex = gen();
 export const defaultAppState = [
-  // {
-  //   component: InternetExplorer,
-  //   header: {
-  //     title: 'Internet Explorer',
-  //     icon: iePaper,
-  //   },
-  //   defaultSize: {
-  //     width: 700,
-  //     height: 500,
-  //   },
-  //   defaultOffset: {
-  //     x: 130,
-  //     y: 20,
-  //   },
   {
     component: Notepad,
     header: {
@@ -79,8 +65,7 @@ export const defaultAppState = [
       y: 20,
     },
     resizable: true,
-    minimized: false,
-    // maximized: window.innerWidth < 450,
+    minimized: true, // Démarre minimisé
     id: genId(),
     zIndex: genIndex(),
   },
@@ -104,26 +89,26 @@ export const defaultAppState = [
   //   id: genId(),
   //   zIndex: genIndex(),
   // },
-  // {
-  //   component: Minesweeper,
-  //   header: {
-  //     title: 'Minesweeper',
-  //     icon: mine,
-  //   },
-  //   defaultSize: {
-  //     width: 0,
-  //     height: 0,
-  //   },
-  //   defaultOffset: {
-  //     x: 180,
-  //     y: 170,
-  //   },
-  //   resizable: false,
-  //   minimized: false,
-  //   maximized: false,
-  //   id: genId(),
-  //   zIndex: genIndex(),
-  // },
+  {
+    component: Prix_et_selections,
+    header: {
+      title: 'Prix et Sélections',
+      icon: notepad,
+    },
+    defaultSize: {
+      width: 0,
+      height: 0,
+    },
+    defaultOffset: {
+      x: 180,
+      y: 170,
+    },
+    resizable: false,
+    minimized: true,
+    maximized: false,
+    id: genId(),
+    zIndex: genIndex(),
+  },
   // {
   //   component: Winamp,
   //   header: {
@@ -145,26 +130,26 @@ export const defaultAppState = [
   //   id: genId(),
   //   zIndex: genIndex(),
   // },
-  // {
-  //   component: MyComputer,
-  //   header: {
-  //     title: 'My Computer',
-  //     icon: computer,
-  //   },
-  //   defaultSize: {
-  //     width: 660,
-  //     height: 500,
-  //   },
-  //   defaultOffset: {
-  //     x: 250,
-  //     y: 40,
-  //   },
-  //   resizable: true,
-  //   minimized: false,
-  //   maximized: window.innerWidth < 800,
-  //   id: genId(),
-  //   zIndex: genIndex(),
-  // },
+  {
+    component: MyComputer,
+    header: {
+      title: 'My Computer',
+      icon: computer,
+    },
+    defaultSize: {
+      width: 660,
+      height: 500,
+    },
+    defaultOffset: {
+      x: 250,
+      y: 40,
+    },
+    resizable: true,
+    minimized: true,
+    maximized: window.innerWidth < 800,
+    id: genId(),
+    zIndex: genIndex(),
+  },
 ];
 
 export const defaultIconState = [

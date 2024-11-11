@@ -1,4 +1,4 @@
-import React, { useReducer, useRef, useCallback } from 'react';
+import React, { useReducer, useRef, useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next'; // Import du hook de traduction
 import styled, { keyframes } from 'styled-components';
 import useMouse from 'react-use/lib/useMouse';
@@ -18,6 +18,7 @@ import {
 } from './constants/actions';
 import { FOCUSING, POWER_STATE } from './constants';
 import { defaultIconState, defaultAppState, appSettings } from './apps';
+import Notepad from './apps/Notepad'; // Ajoutez cette ligne pour importer Notepad
 import Modal from './Modal';
 import Footer from './Footer';
 import Windows from './Windows';
@@ -208,7 +209,16 @@ function WinXP() {
     },
     [focusedAppId],
   );
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      const notepadApp = state.apps.find(app => app.component === Notepad);
+      if (notepadApp && notepadApp.minimized) {
+        dispatch({ type: FOCUS_APP, payload: notepadApp.id });
+      }
+    }, 4000);
 
+    return () => clearTimeout(timer);
+  }, [state.apps]);
   function onMouseDownFooterApp(id) {
     if (focusedAppId === id) {
       dispatch({ type: MINIMIZE_APP, payload: id });

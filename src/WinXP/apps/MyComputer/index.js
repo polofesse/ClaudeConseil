@@ -235,31 +235,46 @@ function MyComputer({ onClose }) {
                 <div className="com__content__left__card__row">
                   <img
                     className="com__content__left__card__img"
-                    src="https://cdn.iconscout.com/icon/free/png-256/medium-1425876-1205067.png"
+                    src="https://i.imgur.com/nEhzrie.jpg"
                     alt="control"
                   />
                   <a
-                    href="https://medium.com/@ShizukuIchi"
+                    href="https://www.instagram.com/les_films_du_sursaut/"
                     target="_blank"
                     rel="noreferrer"
                     className="com__content__left__card__text link"
                   >
-                    Medium
+                    Les Films du Sursaut
                   </a>
                 </div>
                 <div className="com__content__left__card__row">
                   <img
                     className="com__content__left__card__img"
-                    src={mine}
+                    src="https://i.imgur.com/nfkbQzGs.png"
                     alt="control"
                   />
                   <a
-                    href="https://github.com/ShizukuIchi/minesweeper"
+                    href="https://www.instagram.com/marielolaterver/"
                     target="_blank"
                     rel="noreferrer"
                     className="com__content__left__card__text link"
                   >
-                    Minesweeper
+                    Marie-Lola Terver
+                  </a>
+                </div>
+                <div className="com__content__left__card__row">
+                  <img
+                    className="com__content__left__card__img"
+                    src="https://i.imgur.com/nfkbQzGs.png"
+                    alt="control"
+                  />
+                  <a
+                    href="https://www.instagram.com/pauljousselin/"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="com__content__left__card__text link"
+                  >
+                    Paul Jousselin
                   </a>
                 </div>
               </div>
