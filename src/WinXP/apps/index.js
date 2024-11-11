@@ -40,6 +40,8 @@ import English from './English';
 import frenchico from 'assets/windowsIcons/french.png';
 import French from './French';
 
+const aspectRatio = 16 / 9;
+
 const gen = () => {
   let id = -1;
   return () => {
@@ -47,6 +49,22 @@ const gen = () => {
     return id;
   };
 };
+// Calculer la largeur et la hauteur de la galerie
+const calculateWindowSize = () => {
+  const isSmallScreen = window.innerWidth <= 768;
+  const thumbnailHeight = isSmallScreen ? 66 : 100; // Hauteur des vignettes : 66px pour petits écrans, 100px sinon
+  const smallScreenOffset = isSmallScreen ? 15 : 0; // Ajout de 50px de hauteur pour les petits écrans
+
+  // Définir la largeur : 80% de la fenêtre pour les écrans larges, sinon 100% pour les écrans de moins de 500px
+  const width =
+    window.innerWidth < 500 ? window.innerWidth : window.innerWidth * 0.8;
+
+  // Calculer la hauteur en fonction de l’aspect ratio et de la hauteur des vignettes
+  const height = width / aspectRatio + thumbnailHeight + smallScreenOffset;
+
+  return { width, height };
+};
+const windowSize = calculateWindowSize();
 const genId = gen();
 const genIndex = gen();
 export const defaultAppState = [
@@ -375,16 +393,15 @@ export const appSettings = {
     },
     component: PhotosDuFilm,
     defaultSize: {
-      width: window.innerWidth,
-      height: window.innerWidth * (9 / 16) + 94,
+      width: windowSize.width,
+      height: windowSize.height,
     },
     defaultOffset: {
-      x: (window.innerWidth - window.innerWidth) / 2,
+      x: (window.innerWidth - windowSize.width) / 2,
       y: 0,
     },
-    resizable: true,
+    resizable: false, // Empêche le redimensionnement pour conserver le style
     minimized: false,
-    // maximized: window.innerWidth < 800,
   },
   PhotosDuTournage: {
     header: {

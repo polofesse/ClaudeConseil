@@ -14,7 +14,7 @@ i18n.use(initReactI18next).init({
         Générique: 'Credits',
         Photos: 'Photos',
         'Photos tournage': 'Behind the Scenes',
-        'Sélections et Prix': 'Selections and Awards',
+        'Sélections et Prix': 'Selections & Awards',
         Critiques: 'Reviews',
         Projections: 'Screenings',
         Solitaire: 'Solitaire',

@@ -10,23 +10,21 @@ const GalleryComponent = () => {
 
   useEffect(() => {
     const loadImagesIncrementally = async () => {
-      const storageRef = ref(storage, 'STILLS/FULL'); // Chemin du dossier des images principales
+      const storageRef = ref(storage, 'STILLS/FULL');
       const result = await listAll(storageRef);
 
       result.items.forEach(async imageRef => {
         const url = await getDownloadURL(imageRef);
 
-        // Construire le nom du fichier miniature en remplaçant '_1' par '_1thumb' avant l'extension
         const thumbnailName = imageRef.name.replace(
           /_1(\.[\w\d_-]+)$/i,
           '_1thumb$1',
-        ); // Ajoute '_1thumb' avant l'extension
+        );
         const thumbnailRef = ref(
           storage,
           `STILLS/FULL/thumbnails/${thumbnailName}`,
-        ); // Référence au sous-dossier thumbnails
+        );
 
-        // Récupérer l'URL de la miniature, avec une solution de repli si non disponible
         let thumbnailUrl;
         try {
           thumbnailUrl = await getDownloadURL(thumbnailRef);
@@ -34,10 +32,9 @@ const GalleryComponent = () => {
           console.warn(
             `Miniature non trouvée pour ${imageRef.name}, utilisation de l'image complète.`,
           );
-          thumbnailUrl = url; // Utilise l'image principale comme miniature si l'URL de la miniature est indisponible
+          thumbnailUrl = url;
         }
 
-        // Ajouter l'image avec la miniature à la galerie
         setImages(prevImages => [
           ...prevImages,
           { original: url, thumbnail: thumbnailUrl },
@@ -48,9 +45,20 @@ const GalleryComponent = () => {
     loadImagesIncrementally().catch(error => {
       console.error('Erreur lors de la récupération des images:', error);
     });
-  }, [storage]); // Ajoutez `storage` comme dépendance
+  }, [storage]);
 
-  return <ImageGallery items={images} />;
+  return (
+    <div
+      style={{
+        // maxWidth: '90vw',
+        maxHeight: '80vh',
+        margin: 'auto',
+        backgroundColor: 'black', // Fond noir pour éviter le bleu
+      }}
+    >
+      <ImageGallery items={images} additionalClass="custom-gallery" />
+    </div>
+  );
 };
 
 export default GalleryComponent;
