@@ -38,10 +38,20 @@ const initState = {
 const reducer = (state, action = { type: '' }) => {
   switch (action.type) {
     case ADD_APP:
+      // Vérifier que action.payload existe et contient component
+      if (!action.payload || !action.payload.component) {
+        console.error(
+          "L'action ADD_APP manque de propriétés attendues dans payload:",
+          action.payload,
+        );
+        return state; // Retourne l'état inchangé si le payload est incomplet
+      }
+
       const app = state.apps.find(
         _app => _app.component === action.payload.component,
       );
-      if (action.payload.multiInstance || !app) {
+
+      if ((action.payload.multiInstance ?? false) || !app) {
         return {
           ...state,
           apps: [
@@ -57,6 +67,7 @@ const reducer = (state, action = { type: '' }) => {
           focusing: FOCUSING.WINDOW,
         };
       }
+
       const apps = state.apps.map(app =>
         app.component === action.payload.component
           ? { ...app, zIndex: state.nextZIndex, minimized: false }
@@ -270,10 +281,15 @@ function WinXP() {
 
     if (actionMapping[o]) {
       const action = actionMapping[o];
-      if (typeof action === 'string') {
+      if (typeof action === 'string' && appSettings[action]) {
         dispatch({ type: ADD_APP, payload: appSettings[action] });
-      } else {
+      } else if (
+        action === POWER_STATE.LOG_OFF ||
+        action === POWER_STATE.TURN_OFF
+      ) {
         dispatch({ type: POWER_OFF, payload: action });
+      } else {
+        console.error(`Application non trouvée pour "${o}"`);
       }
     } else {
       dispatch({
@@ -282,15 +298,6 @@ function WinXP() {
           ...appSettings.Error,
           injectProps: { message: 'C:\\\nApplication not found' },
         },
-      });
-    }
-  }
-
-  function onMouseDownDesktop(e) {
-    if (e.target === e.currentTarget) {
-      dispatch({
-        type: START_SELECT,
-        payload: { x: mouse.docX, y: mouse.docY },
       });
     }
   }
@@ -313,7 +320,14 @@ function WinXP() {
       payload: appSettings.Error,
     });
   }
-
+  function onMouseDownDesktop(e) {
+    if (e.target === e.currentTarget) {
+      dispatch({
+        type: START_SELECT,
+        payload: { x: mouse.docX, y: mouse.docY },
+      });
+    }
+  }
   function onModalClose() {
     dispatch({ type: CANCEL_POWER_OFF });
   }
