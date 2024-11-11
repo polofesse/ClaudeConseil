@@ -1,4 +1,21 @@
 .image-gallery {
-  max-height: calc(100vh - 20px);
-    overflow: auto;
+  max-height: 78vh;
+    overflow: no;
   }
+
+.image-gallery-slide img {
+  object-fit: cover; /* Les images remplissent l’espace */
+  background-color: black; /* Fond noir pour masquer le bleu */
+  width: 100%;
+  height: 100%;
+}
+
+.image-gallery-content .image-gallery-slide-wrapper {
+  background-color: black; /* Pour masquer tout fond visible */
+}
+
+.image-gallery-slide {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

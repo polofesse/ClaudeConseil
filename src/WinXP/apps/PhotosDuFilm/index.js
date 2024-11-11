@@ -52,8 +52,9 @@ const GalleryComponent = () => {
       style={{
         // maxWidth: '90vw',
         maxHeight: '80vh',
-        margin: 'auto',
+        // margin: '0',
         backgroundColor: 'black', // Fond noir pour éviter le bleu
+        padding: '10px', // Optionnel : pour éviter que les images collent aux bords
       }}
     >
       <ImageGallery items={images} additionalClass="custom-gallery" />
