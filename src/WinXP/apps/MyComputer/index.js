@@ -25,7 +25,6 @@ import pullup from 'assets/windowsIcons/pullup.png';
 import letterboxlogo from 'assets/windowsIcons/letterboxd-mac-icon.png';
 import imdbicon from 'assets/windowsIcons/imdblogo.png';
 import scicon from 'assets/windowsIcons//sclogo.png';
-import mine from 'assets/minesweeper/mine-icon.png';
 import windows from 'assets/windowsIcons/windows.png';
 
 function MyComputer({ onClose }) {
