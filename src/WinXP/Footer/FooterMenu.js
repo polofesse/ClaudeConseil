@@ -3,8 +3,8 @@ import styled from 'styled-components';
 
 import SubMenu from 'components/SubMenu';
 import ie from 'assets/windowsIcons/ie.png';
-import setAccess from 'assets/windowsIcons/227(32x32).png';
 import outlook from 'assets/windowsIcons/887(32x32).png';
+import setAccess from 'assets/windowsIcons/227(32x32).png';
 import documents from 'assets/windowsIcons/308(32x32).png';
 import recentDocuments from 'assets/windowsIcons/301(32x32).png';
 import pictures from 'assets/windowsIcons/307(32x32).png';
@@ -33,7 +33,7 @@ import { AllPrograms, ConnectTo, MyRecentDocuments } from './FooterMenuData';
 function FooterMenu({ className, onClick }) {
   const [hovering, setHovering] = useState('');
 
-  function onHoverStart(e) {
+  function onMouseOver(e) {
     const item = e.target.closest('.menu__item');
     if (!item) return;
     setHovering(item.querySelector('.menu__item__text').textContent);
@@ -45,33 +45,18 @@ function FooterMenu({ className, onClick }) {
         <img className="header__img" src={user} alt="avatar" />
         <span className="header__text">Ordinateur de Claude Conseil</span>
       </header>
-      <section
-        className="menu"
-        onMouseOver={onHoverStart}
-        onTouchStart={onHoverStart}
-      >
+      <section className="menu" onMouseOver={onMouseOver}>
         <hr className="orange-hr" />
         <div className="menu__left">
-          <Item
-            onClick={onClick}
-            onTouchStart={onClick}
-            text="Internet"
-            icon={ie}
-          >
+          <Item onClick={onClick} text="Internet" icon={ie}>
             <div className="menu__item__subtext">Internet Explorer</div>
           </Item>
-          <Item
-            onClick={onClick}
-            onTouchStart={onClick}
-            text="E-mail"
-            icon={outlook}
-          >
+          <Item onClick={onClick} text="E-mail" icon={outlook}>
             <div className="menu__item__subtext">Outlook Express</div>
           </Item>
           <div className="menu__separator" />
           <Items
             onClick={onClick}
-            onTouchStart={onClick}
             items={[
               { icon: BerettaIco, text: 'Beretta' },
               { icon: generiqueIco, text: 'Générique' },
@@ -107,8 +92,6 @@ function FooterMenu({ className, onClick }) {
               </div>
             }
             icon={empty}
-            onClick={onClick}
-            onTouchStart={onClick}
           >
             {hovering === 'All Programs' && (
               <SubMenu data={AllPrograms} onClick={onClick} />
@@ -116,12 +99,7 @@ function FooterMenu({ className, onClick }) {
           </Item>
         </div>
         <div className="menu__right">
-          <Item
-            text="My Documents"
-            icon={documents}
-            onClick={onClick}
-            onTouchStart={onClick}
-          />
+          <Item text="My Documents" icon={documents} onClick={onClick} />
           <Item
             style={
               hovering === 'My Recent Documents'
@@ -133,8 +111,6 @@ function FooterMenu({ className, onClick }) {
             }
             text="My Recent Documents"
             icon={recentDocuments}
-            onClick={onClick}
-            onTouchStart={onClick}
           >
             <div
               style={{
@@ -153,7 +129,6 @@ function FooterMenu({ className, onClick }) {
           </Item>
           <Items
             onClick={onClick}
-            onTouchStart={onClick}
             items={[
               { icon: pictures, text: 'My Pictures' },
               { icon: music, text: 'My Music' },
@@ -163,7 +138,6 @@ function FooterMenu({ className, onClick }) {
           <div className="menu__separator" />
           <Items
             onClick={onClick}
-            onTouchStart={onClick}
             items={[
               { icon: controlPanel, text: 'Control Panel' },
               { icon: setAccess, text: 'Set Program Access and Defaults' },
@@ -180,8 +154,6 @@ function FooterMenu({ className, onClick }) {
             }
             text="Connect To"
             icon={connect}
-            onClick={onClick}
-            onTouchStart={onClick}
           >
             <div
               style={{
@@ -193,16 +165,10 @@ function FooterMenu({ className, onClick }) {
               <SubMenu left="153px" data={ConnectTo} onClick={onClick} />
             )}
           </Item>
-          <Item
-            onClick={onClick}
-            onTouchStart={onClick}
-            text="Printers and Faxes"
-            icon={printer}
-          />
+          <Item onClick={onClick} text="Printers and Faxes" icon={printer} />
           <div className="menu__separator" />
           <Items
             onClick={onClick}
-            onTouchStart={onClick}
             items={[
               { icon: help, text: 'Help and Support' },
               { icon: search, text: 'Search' },
@@ -212,18 +178,13 @@ function FooterMenu({ className, onClick }) {
         </div>
       </section>
       <footer>
-        <div
-          className="footer__item"
-          onClick={() => onClick('Log Off')}
-          onTouchStart={() => onClick('Log Off')}
-        >
+        <div className="footer__item" onClick={() => onClick('Log Off')}>
           <img className="footer__item__img" src={lock} alt="" />
           <span>Log Off</span>
         </div>
         <div
           className="footer__item"
           onClick={() => onClick('Turn Off Computer')}
-          onTouchStart={() => onClick('Turn Off Computer')}
         >
           <img className="footer__item__img" src={shut} alt="" />
           <span>Turn Off Computer</span>
@@ -243,7 +204,6 @@ function Item({
   icon,
   onHover = () => {},
   onClick = () => {},
-  onTouchStart = () => {},
   children,
 }) {
   function _onClick() {
@@ -252,18 +212,18 @@ function Item({
   function onMouseEnter() {
     onHover(text);
   }
-
   return (
     <div
       className="menu__item"
-      onClick={_onClick}
-      onTouchStart={_onClick}
-      onMouseEnter={onMouseEnter}
       style={style}
+      onClick={_onClick}
+      onMouseEnter={onMouseEnter}
     >
-      <img className="menu__item__img" src={icon} alt="" />
-      <span className="menu__item__text">{text}</span>
-      {children}
+      <img className="menu__item__img" src={icon} alt={text} />
+      <div className="menu__item__texts">
+        <div className="menu__item__text">{text}</div>
+        {children}
+      </div>
     </div>
   );
 }
@@ -512,6 +472,6 @@ export default styled(FooterMenu)`
     border-right: 0;
     border-left-color: #00136b;
     position: absolute;
-    left: 146px;
+    left: 135px;
   }
 `;

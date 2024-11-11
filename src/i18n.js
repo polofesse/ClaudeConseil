@@ -9,6 +9,7 @@ i18n.use(initReactI18next).init({
         'Contact & Newsletter': 'Contact & Newsletter',
         'My Computer': 'My Computer',
         'Chants Oiseaux': 'Bird Songs',
+        'Prix du Public': 'Audience Award',
         'Voir le film!': 'Watch it!',
         Générique: 'Credits',
         Photos: 'Photos',

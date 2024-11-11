@@ -137,11 +137,11 @@ const StyledIcon = styled(Icon)`
   align-items: center;
 
   &.language-icon {
-    width: 30px;
-    height: 30px;
+    width: 20px;
+    height: 40px;
     position: fixed; /* Position relative à la fenêtre */
     bottom: 50px; /* Position de base */
-    margin: 0;
+    margin: 5;
   }
 
   &.icon-en {

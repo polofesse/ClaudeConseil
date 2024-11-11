@@ -220,7 +220,7 @@ const BirdGif = styled.img`
   bottom: -20px;
   left: 50%;
   transform: translateX(-50%);
-  width: 150px;
+  width: 50px;
   height: auto;
   pointer-events: none;
 `;

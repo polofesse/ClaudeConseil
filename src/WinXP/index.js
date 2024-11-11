@@ -263,7 +263,7 @@ function WinXP() {
 
   function onClickMenuItem(o) {
     const actionMapping = {
-      Internet: 'Internet Explorer',
+      Internet: 'InternetExplorer',
       Minesweeper: 'Minesweeper',
       'My Computer': 'My Computer',
       Notepad: 'Notepad',
@@ -275,6 +275,7 @@ function WinXP() {
       PhotosDuTournage: 'PhotosDuTournage',
       Winamp: 'Winamp',
       Paint: 'Paint',
+      'E-mail': 'ContactForm',
       'Log Off': POWER_STATE.LOG_OFF,
       'Turn Off Computer': POWER_STATE.TURN_OFF,
     };
