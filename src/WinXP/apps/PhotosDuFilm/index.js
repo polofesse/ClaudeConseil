@@ -1,99 +1,56 @@
-// import React from 'react';
-// import Gallery from 'react-photo-gallery';
-
-// const newImages = [
-//   'https://i.imgur.com/GPZxhYN.jpg',
-//   'https://i.imgur.com/iMmpkBM.jpg',
-//   'https://i.imgur.com/0U7ZE8t.jpg',
-//   'https://i.imgur.com/Pp8W2Ny.jpg',
-//   'https://i.imgur.com/UGdA1kz.jpg',
-//   'https://i.imgur.com/b9nqrgl.jpg',
-//   'https://i.imgur.com/upfWoXo.jpg',
-//   'https://i.imgur.com/qugq7HG.jpg',
-//   'https://i.imgur.com/Ekm2a8i.jpg',
-//   'https://i.imgur.com/DLHfty7.jpg',
-//   'https://i.imgur.com/4G6Baev.jpg',
-//   'https://i.imgur.com/PjZO39i.jpg',
-//   'https://i.imgur.com/ZARCkTC.jpg',
-//   'https://i.imgur.com/LwW4uG2.jpg',
-//   'https://i.imgur.com/KEfBvZ7.jpg',
-//   'https://i.imgur.com/cfjg5ek.jpg',
-//   'https://i.imgur.com/IlTFmz0.jpg',
-//   'https://i.imgur.com/CP5ryTO.jpg',
-//   'https://i.imgur.com/76DM3Re.jpg',
-//   'https://i.imgur.com/X4csIXP.jpg',
-//   'https://i.imgur.com/QU0LJL6.jpg',
-//   'https://i.imgur.com/lIknZMP.jpg',
-//   'https://i.imgur.com/8PISzn6.jpg',
-//   'https://i.imgur.com/2yueI6s.jpg',
-//   'https://i.imgur.com/uMkU4BQ.jpg',
-//   'https://i.imgur.com/BVLoyPE.jpg',
-//   'https://i.imgur.com/3fc00kx.jpg',
-//   'https://i.imgur.com/lCEpiNu.jpg',
-//   'https://i.imgur.com/1KghNQY.jpg',
-//   'https://i.imgur.com/dbejet7.jpg',
-//   'https://i.imgur.com/GMnaxWa.jpg',
-//   'https://i.imgur.com/J75MBgq.jpg',
-//   'https://i.imgur.com/gPLSc8v.jpg',
-// ].map((url, index) => ({
-//   src: url,
-//   width: 1920,
-//   height: 1080,
-//   key: index,
-// }));
-
-// const GalleryComponent = () => {
-//   return <Gallery photos={newImages} />;
-// };
-
-// export default GalleryComponent;
-
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import ImageGallery from 'react-image-gallery';
+import { getStorage, ref, listAll, getDownloadURL } from 'firebase/storage';
+import { app } from '../../../firebaseConfig';
 import 'react-image-gallery/styles/css/image-gallery.css';
-import './MyGallery.css';
-const newImages = [
-  'https://i.imgur.com/8e5XYGV.jpg',
-  'https://i.imgur.com/GPZxhYN.jpg',
-  'https://i.imgur.com/iMmpkBM.jpg',
-  'https://i.imgur.com/0U7ZE8t.jpg',
-  'https://i.imgur.com/Pp8W2Ny.jpg',
-  'https://i.imgur.com/UGdA1kz.jpg',
-  'https://i.imgur.com/b9nqrgl.jpg',
-  'https://i.imgur.com/upfWoXo.jpg',
-  'https://i.imgur.com/qugq7HG.jpg',
-  'https://i.imgur.com/Ekm2a8i.jpg',
-  'https://i.imgur.com/DLHfty7.jpg',
-  'https://i.imgur.com/4G6Baev.jpg',
-  'https://i.imgur.com/PjZO39i.jpg',
-  'https://i.imgur.com/ZARCkTC.jpg',
-  'https://i.imgur.com/LwW4uG2.jpg',
-  'https://i.imgur.com/KEfBvZ7.jpg',
-  'https://i.imgur.com/cfjg5ek.jpg',
-  'https://i.imgur.com/IlTFmz0.jpg',
-  'https://i.imgur.com/CP5ryTO.jpg',
-  'https://i.imgur.com/76DM3Re.jpg',
-  'https://i.imgur.com/X4csIXP.jpg',
-  'https://i.imgur.com/QU0LJL6.jpg',
-  'https://i.imgur.com/lIknZMP.jpg',
-  'https://i.imgur.com/8PISzn6.jpg',
-  'https://i.imgur.com/2yueI6s.jpg',
-  'https://i.imgur.com/uMkU4BQ.jpg',
-  'https://i.imgur.com/BVLoyPE.jpg',
-  'https://i.imgur.com/3fc00kx.jpg',
-  'https://i.imgur.com/lCEpiNu.jpg',
-  'https://i.imgur.com/1KghNQY.jpg',
-  'https://i.imgur.com/dbejet7.jpg',
-  'https://i.imgur.com/GMnaxWa.jpg',
-  'https://i.imgur.com/J75MBgq.jpg',
-  'https://i.imgur.com/gPLSc8v.jpg',
-].map(url => ({
-  original: url,
-  thumbnail: url.replace('.jpg', 't.jpg'),
-}));
 
 const GalleryComponent = () => {
-  return <ImageGallery items={newImages} />;
+  const [images, setImages] = useState([]);
+  const storage = getStorage(app);
+
+  useEffect(() => {
+    const loadImagesIncrementally = async () => {
+      const storageRef = ref(storage, 'STILLS/FULL'); // Chemin du dossier des images principales
+      const result = await listAll(storageRef);
+
+      result.items.forEach(async imageRef => {
+        const url = await getDownloadURL(imageRef);
+
+        // Construire le nom du fichier miniature en remplaçant '_1' par '_1thumb' avant l'extension
+        const thumbnailName = imageRef.name.replace(
+          /_1(\.[\w\d_-]+)$/i,
+          '_1thumb$1',
+        ); // Ajoute '_1thumb' avant l'extension
+        const thumbnailRef = ref(
+          storage,
+          `STILLS/FULL/thumbnails/${thumbnailName}`,
+        ); // Référence au sous-dossier thumbnails
+
+        // Récupérer l'URL de la miniature, avec une solution de repli si non disponible
+        let thumbnailUrl;
+        try {
+          thumbnailUrl = await getDownloadURL(thumbnailRef);
+        } catch (error) {
+          console.warn(
+            `Miniature non trouvée pour ${imageRef.name}, utilisation de l'image complète.`,
+          );
+          thumbnailUrl = url; // Utilise l'image principale comme miniature si l'URL de la miniature est indisponible
+        }
+
+        // Ajouter l'image avec la miniature à la galerie
+        setImages(prevImages => [
+          ...prevImages,
+          { original: url, thumbnail: thumbnailUrl },
+        ]);
+      });
+    };
+
+    loadImagesIncrementally().catch(error => {
+      console.error('Erreur lors de la récupération des images:', error);
+    });
+  }, []);
+
+  return <ImageGallery items={images} />;
 };
 
 export default GalleryComponent;
