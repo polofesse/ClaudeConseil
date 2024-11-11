@@ -394,7 +394,8 @@ export const appSettings = {
     component: PhotosDuFilm,
     defaultSize: {
       width: windowSize.width,
-      height: windowSize.height,
+      // height: windowSize.height,
+      height: 1,
     },
     defaultOffset: {
       x: (window.innerWidth - windowSize.width) / 2,
@@ -410,16 +411,15 @@ export const appSettings = {
     },
     component: PhotosDuTournage,
     defaultSize: {
-      width: window.innerWidth,
-      height: window.innerHeight - 100,
+      width: windowSize.width,
+      height: 1,
     },
     defaultOffset: {
-      x: (window.innerWidth - window.innerWidth) / 2,
+      x: (window.innerWidth - windowSize.width) / 2,
       y: 0,
     },
-    resizable: true,
+    resizable: false, // Empêche le redimensionnement pour conserver le style
     minimized: false,
-    // maximized: window.innerWidth < 800,
   },
   Beretta: {
     header: {
