@@ -48,7 +48,7 @@ const GalleryComponent = () => {
     loadImagesIncrementally().catch(error => {
       console.error('Erreur lors de la récupération des images:', error);
     });
-  }, []);
+  }, [storage]); // Ajoutez `storage` comme dépendance
 
   return <ImageGallery items={images} />;
 };
