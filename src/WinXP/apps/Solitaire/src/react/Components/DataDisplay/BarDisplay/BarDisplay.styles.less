@@ -1,0 +1,39 @@
+.barDisplayContainer {
+  display: flex;
+  z-index: 100;
+
+  .barDisplay {
+    background-color: white;
+    height: 40px;
+    font-size: @fontBody;
+    padding: 5px 10px;
+    color: @primaryColor;
+    min-width: 100px;
+    text-align: center;
+    margin-left: 2px;
+    margin-right: 2px;
+    border: 1px solid @primaryColor;
+  }
+
+  // left display
+  .barDisplay:first-child {
+    border-radius: 20px;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  // right display
+  .barDisplay:last-child {
+    border-radius: 20px;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+
+  @media screen and (min-width: 320px) and (max-width: 767px) {
+    .barDisplay {
+      font-size: @fontBodyMobile;
+      height: 25px;
+      min-width: 50px;
+    }
+  }
+}

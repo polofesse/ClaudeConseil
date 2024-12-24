@@ -5,8 +5,8 @@ const SolitaireGame = () => {
   return (
     <div>
       <iframe
-        src="https://www.squidbyte.com/games/spidersolitairewindowsxp/"
-        title="Spider Solitaire Windows XP"
+        src="https://www.jeusolitaire.fr/jouerausolitaire/solitairewindows.php"
+        title="Solitaire Windows XP"
         width="590"
         height="380"
         style={{ border: 'none' }}

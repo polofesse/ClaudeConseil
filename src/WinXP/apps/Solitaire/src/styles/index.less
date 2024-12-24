@@ -1,0 +1,39 @@
+@import (once) "~antd/dist/antd.less";
+@import (once) "./variables.less";
+@import (once) "./fonts/fonts.less";
+
+.react-solitaire {
+  /* Global */
+  font-family: @fontFamily;
+  font-weight: 200;
+
+  // Pages
+  @import (once) "../react/App/App.styles.less";
+  @import (once) "../react/Pages/GameBoard/GameBoard.styles.less";
+  @import (once) "../react/Pages/StartingPage/StartingPage.styles.less";
+  @import (once) "../react/Pages/ScoresPage/ScoresPage.styles.less";
+  @import (once) "../react/Pages/StatisticsPage/StatisticsPage.styles.less";
+  @import (once) "../react/Pages/AboutPage/AboutPage.styles.less";
+  @import (once) "../react/Pages/ErrorPage/ErrorPage.styles.less";
+  // Game Components
+  @import (once) "../react/Components/BoardFields/BoardFields.styles.less";
+  @import (once) "../react/Components/Cards/Card.styles.less";
+  @import (once) "../react/Components/Piles/Piles.styles.less";
+  // UI Components
+  @import (once) "../react/Components/Table/Table.styles.less";
+  @import (once) "../react/Components/Router/BreadCrumb/BreadCrumb.styles.less";
+  @import (once)
+    "../react/Components/DataDisplay/BarDisplay/BarDisplay.styles.less";
+  @import (once) "../react/Components/PageTitle/PageTitle.styles.less";
+  @import (once) "../react/Components/Buttons/Buttons.styles.less";
+  @import (once) "../react/Components/Modals/Modals.styles.less";
+  @import (once) "../react/Components/Graphs/BarGraph/BarGraph.styles.less";
+  @import (once) "../react/Components/Graphs/PieGraph/PieGraph.styles.less";
+  @import (once)
+    "../react/Components/Graphs/CarouselDisplay/CarouselDisplay.styles.less";
+  @import (once)
+    "../react/Components/Graphs/DashboardDisplay/DashboardDisplay.styles.less";
+  @import (once) "../react/Components/MainMenu/MainMenu.styles.less";
+  @import (once) "../react/Components/Forms/Forms.styles.less";
+
+}

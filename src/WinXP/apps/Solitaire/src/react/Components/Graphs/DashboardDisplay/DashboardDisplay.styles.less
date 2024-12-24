@@ -1,0 +1,52 @@
+.statisticsDashboardContainer {
+  align-self: center;
+  width: 100%;
+  padding-top: 20px;
+
+  .bottomRow {
+    margin-top: 20px;
+  }
+
+  .graphTitle {
+    color: @fontColor;
+    font-size: @fontBody;
+    width: 100%;
+    text-align: center;
+  }
+
+  .statisticsPieChart {
+    left: calc((100% - 250px) / 2);
+  }
+
+  .statisticsBarChart {
+    left: calc((100% - 500px) / 2);
+  }
+
+  .ant-empty {
+    padding: 20px 0;
+  }
+
+  .piechartEmpty {
+    padding-left: calc((100% - 60px) / 2);
+  }
+
+  @media screen and (min-width: 320px) and (max-width: 767px) {
+    .graphTitle {
+      font-size: @fontBodyMobile;
+    }
+
+    .dashboardPieChart {
+      top: 0;
+      left: calc((100% - 200px) / 2);
+    }
+
+    .dashboardBarChart {
+      top: 0;
+      left: calc((100% - 200px - 80px) / 2);
+    }
+
+    .secondCol {
+      margin-top: 15%;
+    }
+  }
+}

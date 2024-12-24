@@ -1,0 +1,72 @@
+.statisticsCarouselContainer {
+  align-self: center;
+  width: 100%;
+  max-width: 90vw;
+  padding-top: 20px;
+
+  .tabTitle {
+    color: @fontColor;
+    font-size: @fontTitle;
+    width: 100%;
+    text-align: center;
+  }
+
+  .statisticsCarousel {
+    ul > li > button {
+      height: 10px;
+      border-radius: 10px;
+    }
+
+    .slick-slide {
+      height: 700px;
+    }
+  }
+
+  .carouselArrow {
+    z-index: 2;
+    position: absolute;
+    font-size: @fontTitle;
+    top: 50%;
+    transition: @smallTransitionTime;
+  }
+
+  .carouselArrow:hover {
+    font-size: calc(@fontTitle + 2px);
+  }
+
+  .carouselArrowLeft {
+    left: @limitHorizontal;
+  }
+
+  .carouselArrowRight {
+    right: @limitHorizontal;
+  }
+
+  @media screen and (min-width: 320px) and (max-width: 767px) {
+    .tabTitle {
+      font-size: @fontTitleMobile;
+    }
+
+    .statisticsCarousel {
+      .slick-slide {
+        height: 400px;
+      }
+    }
+
+    .carouselArrow {
+      font-size: @fontTitleMobile;
+    }
+
+    .carouselArrow:hover {
+      font-size: calc(@fontTitleMobile + 1px);
+    }
+
+    .carouselArrowLeft {
+      left: calc(@limitHorizontal / 2);
+    }
+
+    .carouselArrowRight {
+      right: calc(@limitHorizontal / 2);
+    }
+  }
+}

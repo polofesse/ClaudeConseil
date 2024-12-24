@@ -31,7 +31,8 @@ import Prix_et_selections from './Noteprix';
 import Critiques from './Notecrit';
 import Projections from './Notediff';
 import ContactForm from './ContactForm';
-import SolitaireGame from './Solitaire/Solitaire';
+import SolitaireGame from './Solitaire1/Solitaire';
+import Solitaire from './Solitaire';
 import spiderico from 'assets/windowsIcons/iconsolitaire.png';
 import filmico from 'assets/windowsIcons/filmico.png';
 import baico from 'assets/windowsIcons/baico.png';
@@ -277,6 +278,13 @@ export const defaultIconState = [
     isFocus: false,
   },
   {
+    id: 20,
+    icon: spiderico,
+    title: 'Solitaire',
+    component: Solitaire,
+    isFocus: false,
+  },
+  {
     id: 1,
     icon: mine,
     title: 'Minesweeper',
@@ -477,10 +485,28 @@ export const appSettings = {
   },
   Solitaire: {
     header: {
-      icon: BerettaIco,
+      icon: spiderico,
       title: 'Solitaire',
     },
     component: SolitaireGame,
+    defaultSize: {
+      width: 597,
+      height: 409,
+    },
+    defaultOffset: {
+      x: (window.innerWidth - window.innerWidth) / 2,
+      y: 0,
+    },
+    resizable: true,
+    minimized: false,
+    //maximized: window.innerWidth < 800,
+  },
+  Solitaireok: {
+    header: {
+      icon: spiderico,
+      title: 'Solitaire',
+    },
+    component: Solitaire,
     defaultSize: {
       width: 597,
       height: 409,
@@ -706,4 +732,5 @@ export {
   FilmComplet,
   English,
   French,
+  Solitaire,
 };

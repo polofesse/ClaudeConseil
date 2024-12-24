@@ -1,0 +1,182 @@
+.mainLayout {
+  width: -webkit-fill-available;
+  height: -webkit-fill-available;
+  min-height: 100vh;
+  background-color: @primaryColor;
+
+  .appLayout {
+    min-height: 100%;
+
+    .appContent {
+      position: relative;
+      top: 0;
+      bottom: 0;
+      overflow-x: hidden !important;
+
+      .mainPage {
+        height: 100%;
+        background-color: @primaryColor;
+        color: @fontColor;
+        overflow-x: hidden;
+        overflow-y: auto;
+      }
+
+      .blurBackground {
+        -webkit-filter: blur(5px);
+        -moz-filter: blur(5px);
+        -o-filter: blur(5px);
+        -ms-filter: blur(5px);
+        filter: blur(5px);
+        overflow: hidden !important;
+        height: 100vh !important;
+        min-height: unset !important;
+      }
+    }
+  }
+
+  .sidebar {
+    width: 220px;
+    .sidebarToggleSpan {
+      position: absolute;
+      bottom: 20px;
+      width: 100%;
+      text-align: center;
+
+      .sidebarToggleIcon {
+        color: @fontColor;
+        font-size: @fontTitle;
+      }
+    }
+    .logo {
+      width: 100%;
+      height: auto;
+      text-align: center;
+      margin: 20% 0;
+      padding: 10px 20px 10px 10px !important;
+      .logoTitle {
+        max-height: 85px;
+        max-width: 85px;
+        width: 100%;
+        height: 100%;
+        margin: 20px 0;
+        cursor: pointer;
+        filter: brightness(0) invert(1);
+        transition: @smallTransitionTime;
+      }
+    }
+
+    .logoSelected {
+      background-color: @darkSecondaryColor;
+    }
+  }
+
+  .ant-layout-sider {
+    background: transparent;
+    background-color: @secondaryColor;
+
+    .ant-menu-dark {
+      background: transparent;
+      .ant-menu-item {
+        font-family: @fontFamily;
+        font-size: calc(@fontBody - 1px);
+        color: @fontColor;
+        .anticon {
+          font-size: @fontBody;
+        }
+      }
+      .ant-menu-item-selected {
+        background-color: @darkSecondaryColor;
+      }
+      .ant-menu-inline.ant-menu-sub {
+        background-color: @darkSecondaryColor;
+      }
+    }
+    .ant-menu-submenu-open {
+      color: @fontColor;
+      background-color: @hoverElemColor;
+    }
+  }
+}
+
+.ant-spin-spinning {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  background-color: @primaryColor;
+
+  .ant-spin-dot {
+    font-size: 100px;
+    margin-top: calc((100vh - 100px) / 2);
+
+    .ant-spin-dot-item {
+      width: 50px;
+      height: 50px;
+      background-color: white;
+    }
+  }
+}
+
+@media screen and (min-width: 320px) and (max-width: 767px) {
+  .mainLayout {
+    .appContent {
+      .mainPage {
+        min-width: 250px;
+        min-height: 110%;
+      }
+    }
+
+    .ant-layout-sider {
+      flex: 0 0 120px !important;
+      max-width: 120px !important;
+      min-width: 120px !important;
+      width: 120px !important;
+    }
+    .ant-layout-sider-collapsed {
+      flex: 0 0 60px !important;
+      max-width: 60px !important;
+      min-width: 60px !important;
+      width: 60px !important;
+
+      .ant-menu-item {
+        padding: 0 0 0 20px !important;
+        .logoTitle {
+          max-width: 30px;
+          margin-left: -40px;
+        }
+      }
+    }
+
+    .sidebar {
+      .sidebarToggleSpan {
+        .sidebarToggleIcon {
+          font-size: @fontTitleMobile;
+        }
+      }
+    }
+
+    .ant-layout-sider {
+      .ant-menu-dark {
+        .ant-menu-item {
+          font-size: calc(@fontBodyMobile - 1px);
+          .anticon {
+            font-size: @fontBodyMobile;
+          }
+        }
+      }
+    }
+  }
+
+  .ant-spin-spinning {
+    .ant-spin-dot {
+      font-size: 50px;
+      margin-top: calc((100vh - 50px) / 2);
+
+      .ant-spin-dot-item {
+        width: 25px;
+        height: 25px;
+      }
+    }
+  }
+}
