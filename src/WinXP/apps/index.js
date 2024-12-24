@@ -32,7 +32,9 @@ import Critiques from './Notecrit';
 import Projections from './Notediff';
 import ContactForm from './ContactForm';
 import SolitaireGame from './Solitaire/Solitaire';
-import spiderico from 'assets/windowsIcons/iconsolitaire.png';
+import SolitaireGame2 from './Solitaire2/Solitaire2';
+import spiderico from 'assets/windowsIcons/spider.png';
+import solitaireico from 'assets/windowsIcons/solitaire.png';
 import filmico from 'assets/windowsIcons/filmico.png';
 import baico from 'assets/windowsIcons/baico.png';
 import englishico from 'assets/windowsIcons/english.png';
@@ -272,8 +274,15 @@ export const defaultIconState = [
   {
     id: 12,
     icon: spiderico,
-    title: 'Solitaire',
+    title: 'Spider Solitaire',
     component: SolitaireGame,
+    isFocus: false,
+  },
+  {
+    id: 19,
+    icon: solitaireico,
+    title: 'Solitaire',
+    component: SolitaireGame2,
     isFocus: false,
   },
   {
@@ -477,19 +486,37 @@ export const appSettings = {
   },
   Solitaire: {
     header: {
-      icon: BerettaIco,
-      title: 'Solitaire',
+      icon: spiderico,
+      title: 'Spider Solitaire',
     },
     component: SolitaireGame,
     defaultSize: {
       width: 597,
-      height: 409,
+      height: 400,
     },
     defaultOffset: {
       x: (window.innerWidth - window.innerWidth) / 2,
       y: 0,
     },
-    resizable: true,
+    resizable: false,
+    minimized: false,
+    //maximized: window.innerWidth < 800,
+  },
+  SolitaireGame2: {
+    header: {
+      icon: solitaireico,
+      title: 'Solitaire',
+    },
+    component: SolitaireGame2,
+    defaultSize: {
+      width: 514,
+      height: 410,
+    },
+    defaultOffset: {
+      x: (window.innerWidth - window.innerWidth) / 2,
+      y: 0,
+    },
+    resizable: false,
     minimized: false,
     //maximized: window.innerWidth < 800,
   },
@@ -701,6 +728,7 @@ export {
   Prix_et_selections,
   Critiques,
   SolitaireGame,
+  SolitaireGame2,
   ContactForm,
   BANDEANNONCE,
   FilmComplet,

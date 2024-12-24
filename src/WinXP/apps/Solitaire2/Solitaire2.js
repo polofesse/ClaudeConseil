@@ -5,10 +5,10 @@ const SolitaireGame2 = () => {
   return (
     <div>
       <iframe
-        src="https://www.squidbyte.com/games/spidersolitairewindowsxp/"
-        title="Solitaire Windows XP"
-        width="590"
-        height="370"
+        src="https://www.freecell.io/uploads/games/files/freecellio/solitaire-windows-xp/1.3.0/?v=8"
+        title="Spider Solitaire Windows XP"
+        width="507"
+        height="380"
         style={{ border: 'none' }}
       ></iframe>
     </div>
