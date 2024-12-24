@@ -35,15 +35,24 @@ function Footer({
 }) {
   const [time, setTime] = useState(getTime);
   const [menuOn, setMenuOn] = useState(false);
+  const [isTouching, setIsTouching] = useState(false);
   const menu = useRef(null);
 
-  function toggleMenu() {
-    setMenuOn(prev => !prev); // Inverse l'état : si ouvert, fermer, sinon ouvrir.
+  function toggleMenu(event) {
+    if (event.type === 'touchstart') {
+      if (isTouching) return; // Ignore si le toucher est déjà actif
+      setIsTouching(true);
+    }
+    setMenuOn(prev => !prev); // Inverse l'état du menu
+  }
+
+  function handleTouchEnd() {
+    setIsTouching(false); // Réinitialise l'état après le relevé
   }
 
   function _onClickMenuItem(name) {
     onClickMenuItem(name);
-    setMenuOn(false); // Ferme le menu après avoir cliqué sur un élément du menu.
+    setMenuOn(false); // Ferme le menu après avoir cliqué sur un élément
   }
 
   useEffect(() => {
@@ -65,7 +74,8 @@ function Footer({
           alt="start"
           className="footer__start"
           onMouseDown={toggleMenu}
-          onTouchStart={toggleMenu} // Gère l'ouverture et la fermeture pour mobile
+          onTouchStart={toggleMenu} // Ouvre/Ferme uniquement au premier contact
+          onTouchEnd={handleTouchEnd} // Réinitialise après le relevé du doigt
         />
         {[...apps].map(
           app =>
@@ -77,7 +87,6 @@ function Footer({
                 title={app.header.title}
                 onMouseDown={onMouseDownApp}
                 onTouchStart={onMouseDownApp} // Gère les clics pour mobile
-                isFocus={focusedAppId === app.id}
               />
             ),
         )}
@@ -97,18 +106,27 @@ function Footer({
 }
 
 function FooterWindow({ id, icon, title, onMouseDown, onTouchStart, isFocus }) {
+  const [isTouching, setIsTouching] = useState(false);
+
   function _onMouseDown() {
     onMouseDown(id);
   }
 
   function _onTouchStart() {
-    onTouchStart(id);
+    if (isTouching) return; // Ignore si un touch est déjà actif
+    setIsTouching(true); // Active le touch
+    onTouchStart(id); // Appelle la fonction de gestion
+  }
+
+  function _onTouchEnd() {
+    setIsTouching(false); // Réinitialise après le relevé
   }
 
   return (
     <div
       onMouseDown={_onMouseDown}
-      onTouchStart={_onTouchStart} // Gère les clics pour mobile
+      onTouchStart={_onTouchStart} // Gère uniquement le premier contact
+      onTouchEnd={_onTouchEnd} // Réinitialise après le relevé
       className={`footer__window ${isFocus ? 'focus' : 'cover'}`}
     >
       <img className="footer__icon" src={icon} alt={title} />
