@@ -8,7 +8,7 @@ export default function Prix_et_selections({ onClose }) {
   const [firstText, setFirstText] = useState('');
   const [secondText, setSecondText] = useState('');
   const [wordWrap, setWordWrap] = useState(false);
-  const { t, i18n } = useTranslation();
+  const { i18n } = useTranslation();
 
   useEffect(() => {
     const firstDocumentUrl =
@@ -106,6 +106,17 @@ export default function Prix_et_selections({ onClose }) {
         <WindowDropDowns items={dropDownData} onClickItem={onClickOptionItem} />
       </section>
       <StyledContent wordWrap={wordWrap}>
+        <StyledH1>
+          Le film est disponible{' '}
+          <a
+            href="https://www.france.tv/films/courts-metrages/5645988-les-mysterieuses-aventures-de-claude-conseil.html"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            ici sur France TV
+          </a>
+          .
+        </StyledH1>
         {renderText(firstText)}
         <StyledImage src="https://i.imgur.com/rUs7GBA.jpg" alt="Illustration" />
         {renderText(secondText)}
