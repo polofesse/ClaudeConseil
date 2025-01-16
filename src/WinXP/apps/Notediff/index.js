@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { useTranslation } from 'react-i18next';
 import { WindowDropDowns } from 'components';
 import dropDownData from './dropDownData';
 
-export default function Prix_et_selections({ onClose }) {
+export default function Notepad({ onClose }) {
   const [docText, setDocText] = useState('');
   const [wordWrap, setWordWrap] = useState(false);
+  const { t } = useTranslation();
 
   useEffect(() => {
     fetch(
@@ -13,14 +15,11 @@ export default function Prix_et_selections({ onClose }) {
     )
       .then(response => response.text())
       .then(data => {
-        // Parse the HTML content into a DOM structure
         const parser = new DOMParser();
         const doc = parser.parseFromString(data, 'text/html');
 
-        // Extract meaningful text content from the document, preserving headings and paragraphs
         let extractedText = '';
 
-        // Extract H1, H2, H3, and paragraphs
         doc.querySelectorAll('h1, h2, h3, p').forEach(element => {
           const tag = element.tagName.toLowerCase();
           const textContent = element.textContent.trim();
@@ -38,13 +37,20 @@ export default function Prix_et_selections({ onClose }) {
           }
         });
 
-        // Set the extracted text to state
+        // Construire le texte avec le lien traduisible
+        const link = `<a href="https://www.france.tv/films/courts-metrages/5645988-les-mysterieuses-aventures-de-claude-conseil.html" target="_blank" rel="noopener noreferrer">${t(
+          'linkText',
+        )}</a>`;
+        const translatedText = t('movieAvailable', { link });
+
+        extractedText = `### ${translatedText}\n\n` + extractedText;
+
         setDocText(extractedText);
       })
       .catch(error =>
         console.error('Erreur lors du chargement du document :', error),
       );
-  }, []);
+  }, [t]);
 
   function onClickOptionItem(item) {
     switch (item) {
@@ -64,11 +70,24 @@ export default function Prix_et_selections({ onClose }) {
     }
   }
 
-  // Function to render text with headings and paragraphs
   const renderText = text => {
     return text.split('\n').map((line, index) => {
-      if (line.startsWith('### '))
-        return <StyledH1 key={index}>{line.replace('### ', '')}</StyledH1>;
+      if (line.startsWith('### ')) {
+        const isLink = line.includes('<a');
+        return (
+          <StyledH1 key={index}>
+            {isLink ? (
+              <span
+                dangerouslySetInnerHTML={{
+                  __html: line.replace('### ', ''),
+                }}
+              />
+            ) : (
+              line.replace('### ', '')
+            )}
+          </StyledH1>
+        );
+      }
       if (line.startsWith('## '))
         return <StyledH2 key={index}>{line.replace('## ', '')}</StyledH2>;
       if (line.startsWith('# '))
@@ -108,8 +127,8 @@ const StyledContent = styled.div`
   border: 1px solid #96abff;
   background: #fff;
   font-family: 'Lucida Console', monospace;
-  font-size: 9.75px; /* Réduction à environ 3/4 (13px * 0.75) */
-  line-height: 1.2em; /* Ajustement léger pour la réduction de taille */
+  font-size: 9.75px;
+  line-height: 1.2em;
   white-space: pre-wrap;
 
   p {
@@ -120,41 +139,41 @@ const StyledContent = styled.div`
 `;
 
 const StyledH1 = styled.h1`
-  font-size: 1.5em; /* Taille réduite pour h1 (2em * 0.75) */
+  font-size: 1.5em;
   margin-top: 0.5em;
   margin-bottom: 1.2em;
 `;
 
 const StyledH2 = styled.h2`
-  font-size: 0.94em; /* Taille réduite pour h2 (1.25em * 0.75) */
+  font-size: 0.94em;
   margin-top: 1em;
   margin-bottom: 0.4em;
   position: relative;
-  padding-left: 15px; /* Ajustement pour la taille du point */
+  padding-left: 15px;
 
   &:before {
     content: '•';
     position: absolute;
     left: 0;
-    font-size: 1.2em; /* Taille réduite du point */
+    font-size: 1.2em;
     line-height: 1em;
   }
 `;
 
 const StyledH3 = styled.h3`
-  font-size: 0.975em; /* Taille réduite pour h3 (1.3em * 0.75) */
+  font-size: 0.975em;
   font-style: italic;
   margin-top: 0.4em;
   margin-bottom: 0.4em;
   position: relative;
-  padding-left: 52px; /* Ajustement pour la taille du trophée */
+  padding-left: 52px;
 
   &::before {
     content: '🎥';
     position: absolute;
     left: 30px;
     top: 0;
-    font-size: 1.2em; /* Taille réduite du trophée */
+    font-size: 1.2em;
     line-height: 1em;
   }
 `;

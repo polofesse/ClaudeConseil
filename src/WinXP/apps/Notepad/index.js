@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { useTranslation } from 'react-i18next'; // Import du hook de traduction
+import { useTranslation } from 'react-i18next';
 import { WindowDropDowns } from 'components';
 import dropDownData from './dropDownData';
 
 export default function Prix_et_selections({ onClose }) {
   const [docText, setDocText] = useState('');
   const [wordWrap, setWordWrap] = useState(false);
-  const { i18n } = useTranslation(); // Hook de traduction pour obtenir la langue
+  const { t, i18n } = useTranslation();
 
   useEffect(() => {
-    // Détermine le lien à utiliser en fonction de la langue actuelle
     const documentUrl =
       i18n.language === 'en'
         ? 'https://docs.google.com/document/d/e/2PACX-1vSccKM5TGYcskrQa0YyDQz1EYbzXT_uuVzGGVmu4rdsD9O06H5P7G9kfsRx4ksHi3dmA_wXmIkruqXv/pub'
@@ -41,12 +40,20 @@ export default function Prix_et_selections({ onClose }) {
           }
         });
 
+        // Ajout du texte avec le lien traduisible
+        const link = `<a href="https://www.france.tv/films/courts-metrages/5645988-les-mysterieuses-aventures-de-claude-conseil.html" target="_blank" rel="noopener noreferrer">${t(
+          'linkText',
+        )}</a>`;
+        const translatedText = t('movieAvailable', { link });
+
+        extractedText = `### ${translatedText}\n\n` + extractedText;
+
         setDocText(extractedText);
       })
       .catch(error =>
         console.error('Erreur lors du chargement du document :', error),
       );
-  }, [i18n.language]); // Dépendance sur la langue pour déclencher le fetch lors du changement de langue
+  }, [i18n.language, t]);
 
   function onClickOptionItem(item) {
     switch (item) {
@@ -68,8 +75,22 @@ export default function Prix_et_selections({ onClose }) {
 
   const renderText = text => {
     return text.split('\n').map((line, index) => {
-      if (line.startsWith('### '))
-        return <StyledH1 key={index}>{line.replace('### ', '')}</StyledH1>;
+      if (line.startsWith('### ')) {
+        const isLink = line.includes('<a');
+        return (
+          <StyledH1 key={index}>
+            {isLink ? (
+              <span
+                dangerouslySetInnerHTML={{
+                  __html: line.replace('### ', ''),
+                }}
+              />
+            ) : (
+              line.replace('### ', '')
+            )}
+          </StyledH1>
+        );
+      }
       if (line.startsWith('## '))
         return <StyledH2 key={index}>{line.replace('## ', '')}</StyledH2>;
       if (line.startsWith('# '))
@@ -109,53 +130,54 @@ const StyledContent = styled.div`
   border: 1px solid #96abff;
   background: #fff;
   font-family: 'Lucida Console', monospace;
-  font-size: 11px; /* Réduction à environ 3/4 (13px * 0.75) */
-  line-height: 1.2em; /* Ajustement léger pour la réduction de taille */
+  font-size: 11px;
+  line-height: 1.2em;
   white-space: pre-wrap;
 
   p {
-    margin-top: 0.1em;
-    margin-bottom: 0.1em;
+    margin-top: 1em;
+    margin-bottom: 1em;
     line-height: inherit;
   }
 `;
 
 const StyledH1 = styled.h1`
-  font-size: 1.5em; /* Taille réduite pour h1 (2em * 0.75) */
+  font-size: 1.5em;
   margin-top: 0.5em;
   margin-bottom: 1.2em;
+  line-height: 1em; /* Augmente l'interligne */
 `;
 
 const StyledH2 = styled.h2`
-  font-size: 0.94em; /* Taille réduite pour h2 (1.25em * 0.75) */
+  font-size: 0.94em;
   margin-top: 1em;
   margin-bottom: 0.4em;
   position: relative;
-  padding-left: 15px; /* Ajustement pour la taille du point */
+  padding-left: 15px;
 
   &:before {
     content: '•';
     position: absolute;
     left: 0;
-    font-size: 1.2em; /* Taille réduite du point */
+    font-size: 1.2em;
     line-height: 1em;
   }
 `;
 
 const StyledH3 = styled.h3`
-  font-size: 0.975em; /* Taille réduite pour h3 (1.3em * 0.75) */
+  font-size: 0.975em;
   font-style: italic;
   margin-top: 0.4em;
   margin-bottom: 0.4em;
   position: relative;
-  padding-left: 52px; /* Ajustement pour la taille du trophée */
+  padding-left: 52px;
 
   &::before {
     content: '🦉';
     position: absolute;
     left: 30px;
     top: 0;
-    font-size: 1.2em; /* Taille réduite du trophée */
+    font-size: 1.2em;
     line-height: 1em;
   }
 `;

@@ -12,6 +12,9 @@ i18n.use(initReactI18next).init({
         'Prix du Public': 'Audience Award',
         'Voir le film!': 'Watch it!',
         Générique: 'Credits',
+        movieAvailable: 'The movie is available {{ link }}.',
+        linkText:
+          'here on France TV. And soon with subtitles with MyFrenchFilm Festival',
         Photos: 'Photos',
         'Photos tournage': 'Behind the Scenes',
         'Sélections et Prix': 'Selections & Awards',
@@ -51,6 +54,8 @@ i18n.use(initReactI18next).init({
         'Voir le film!': 'Voir le film!',
         Générique: 'Générique',
         Photos: 'Photos',
+        movieAvailable: 'Le film est disponible {{ link }}.',
+        linkText: 'ici sur France TV',
         'Photos tournage': 'Photos tournage',
         'Sélections et Prix': 'Sélections et Prix',
         Critiques: 'Critiques',
