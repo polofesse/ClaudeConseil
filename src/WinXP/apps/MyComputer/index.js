@@ -308,7 +308,7 @@ function MyComputer({ onClose }) {
                 >
                   <img
                     className="com__content__right__card__img"
-                    src="https://imgur.com/c8Wrnl9.png"
+                    src="https://i.imgur.com/c8Wrnl9.png"
                     alt="control"
                   />
                   <div className="com__content__right__card__text">
