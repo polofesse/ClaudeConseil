@@ -5,28 +5,33 @@ import { WindowDropDowns } from 'components';
 import dropDownData from './dropDownData';
 
 export default function Prix_et_selections({ onClose }) {
-  const [docText, setDocText] = useState('');
+  const [firstText, setFirstText] = useState('');
+  const [secondText, setSecondText] = useState('');
   const [wordWrap, setWordWrap] = useState(false);
   const { t, i18n } = useTranslation();
 
   useEffect(() => {
-    const documentUrl =
+    const firstDocumentUrl =
       i18n.language === 'en'
         ? 'https://docs.google.com/document/d/e/2PACX-1vSccKM5TGYcskrQa0YyDQz1EYbzXT_uuVzGGVmu4rdsD9O06H5P7G9kfsRx4ksHi3dmA_wXmIkruqXv/pub'
         : 'https://docs.google.com/document/d/e/2PACX-1vT3lwCXXX6AU1gOvGAV-e_MBaPHNvtf68Z1qW-on4gn5C48I13emfJr9mbHMHCjd6Vc9N69-vxv4P4R/pub';
 
-    fetch(documentUrl)
-      .then(response => response.text())
-      .then(data => {
+    const secondDocumentUrl =
+      i18n.language === 'en'
+        ? 'https://docs.google.com/document/d/e/2PACX-1vQMLp0EljpZIcubvnzVF_uDmYIODLGz1sGxcioeabKNwXWlNAIajY3qqMeRhwQnd9YOiTZt3H8QklDF/pub'
+        : 'https://docs.google.com/document/d/e/2PACX-1vRjJI-pnzzgt9N1mY4Us2V4oFWdYLx9MfDphQWXQjcg2FVRQj8IBX9Pe0UKIpyeGd2G6rrWvh4gPVib/pub';
+
+    const fetchText = async (url, setText) => {
+      try {
+        const response = await fetch(url);
+        const data = await response.text();
         const parser = new DOMParser();
         const doc = parser.parseFromString(data, 'text/html');
 
         let extractedText = '';
-
         doc.querySelectorAll('h1, h2, h3, p').forEach(element => {
           const tag = element.tagName.toLowerCase();
           const textContent = element.textContent.trim();
-
           if (textContent) {
             if (tag === 'h1') {
               extractedText += `### ${textContent}\n`;
@@ -39,21 +44,15 @@ export default function Prix_et_selections({ onClose }) {
             }
           }
         });
+        setText(extractedText);
+      } catch (error) {
+        console.error('Erreur lors du chargement du document :', error);
+      }
+    };
 
-        // Ajout du texte avec le lien traduisible
-        const link = `<a href="https://www.france.tv/films/courts-metrages/5645988-les-mysterieuses-aventures-de-claude-conseil.html" target="_blank" rel="noopener noreferrer">${t(
-          'linkText',
-        )}</a>`;
-        const translatedText = t('movieAvailable', { link });
-
-        extractedText = `### ${translatedText}\n\n` + extractedText;
-
-        setDocText(extractedText);
-      })
-      .catch(error =>
-        console.error('Erreur lors du chargement du document :', error),
-      );
-  }, [i18n.language, t]);
+    fetchText(firstDocumentUrl, setFirstText);
+    fetchText(secondDocumentUrl, setSecondText);
+  }, [i18n.language]);
 
   function onClickOptionItem(item) {
     switch (item) {
@@ -65,8 +64,8 @@ export default function Prix_et_selections({ onClose }) {
         break;
       case 'Time/Date':
         const date = new Date();
-        setDocText(
-          `${docText}${date.toLocaleTimeString()} ${date.toLocaleDateString()}`,
+        setFirstText(
+          `${firstText}${date.toLocaleTimeString()} ${date.toLocaleDateString()}`,
         );
         break;
       default:
@@ -91,10 +90,12 @@ export default function Prix_et_selections({ onClose }) {
           </StyledH1>
         );
       }
-      if (line.startsWith('## '))
+      if (line.startsWith('## ')) {
         return <StyledH2 key={index}>{line.replace('## ', '')}</StyledH2>;
-      if (line.startsWith('# '))
+      }
+      if (line.startsWith('# ')) {
         return <StyledH3 key={index}>{line.replace('# ', '')}</StyledH3>;
+      }
       return <p key={index}>{line}</p>;
     });
   };
@@ -104,7 +105,11 @@ export default function Prix_et_selections({ onClose }) {
       <section className="np__toolbar">
         <WindowDropDowns items={dropDownData} onClickItem={onClickOptionItem} />
       </section>
-      <StyledContent wordWrap={wordWrap}>{renderText(docText)}</StyledContent>
+      <StyledContent wordWrap={wordWrap}>
+        {renderText(firstText)}
+        <StyledImage src="https://i.imgur.com/rUs7GBA.jpg" alt="Illustration" />
+        {renderText(secondText)}
+      </StyledContent>
     </Div>
   );
 }
@@ -137,15 +142,23 @@ const StyledContent = styled.div`
   p {
     margin-top: 1em;
     margin-bottom: 1em;
-    line-height: inherit;
+    line-height: 1.5em;
   }
+`;
+
+const StyledImage = styled.img`
+  display: block;
+  max-width: 100%;
+  margin: 2em auto;
+  border-radius: 8px;
+  border: 1px solid #ccc;
 `;
 
 const StyledH1 = styled.h1`
   font-size: 1.5em;
   margin-top: 0.5em;
   margin-bottom: 1.2em;
-  line-height: 1em; /* Augmente l'interligne */
+  line-height: 1.2em; /* Interligne normal */
 `;
 
 const StyledH2 = styled.h2`

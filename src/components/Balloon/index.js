@@ -3,7 +3,7 @@ import styled, { keyframes } from 'styled-components';
 
 import risk from 'assets/windowsIcons/229(16x16).png';
 
-function Balloon({ startAfter = 4000, duration = 15000 }) {
+function Balloon({ startAfter = 6000, duration = 15000 }) {
   const [show, setShow] = useState(true);
   const [start, setStart] = useState(false);
   useEffect(() => {
@@ -11,7 +11,7 @@ function Balloon({ startAfter = 4000, duration = 15000 }) {
     const fadeTimer = setTimeout(() => setShow(false), startAfter + duration);
     const closeTimer = setTimeout(
       () => setStart(false),
-      startAfter + duration + 1000,
+      startAfter + duration + 2000,
     );
     return () => {
       clearTimeout(openTimer);

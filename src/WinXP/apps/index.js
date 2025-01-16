@@ -81,7 +81,7 @@ export const defaultAppState = [
       height: 450,
     },
     defaultOffset: {
-      x: 70,
+      x: 75,
       y: 20,
     },
     resizable: true,
