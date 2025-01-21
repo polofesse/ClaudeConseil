@@ -127,14 +127,14 @@ const StyledContent = styled.div`
   border: 1px solid #96abff;
   background: #fff;
   font-family: 'Lucida Console', monospace;
-  font-size: 9.75px;
+  font-size: 11px;
   line-height: 1.2em;
   white-space: pre-wrap;
 
   p {
-    margin-top: 0.1em;
-    margin-bottom: 0.1em;
-    line-height: inherit;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    line-height: 1.5em;
   }
 `;
 
@@ -142,6 +142,7 @@ const StyledH1 = styled.h1`
   font-size: 1.5em;
   margin-top: 0.5em;
   margin-bottom: 1.2em;
+  line-height: 1.2em; /* Interligne normal */
 `;
 
 const StyledH2 = styled.h2`

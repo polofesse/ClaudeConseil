@@ -14,7 +14,7 @@ i18n.use(initReactI18next).init({
         Générique: 'Credits',
         movieAvailable: 'The movie is available {{ link }}.',
         linkText:
-          'here on France TV. And soon with subtitles with MyFrenchFilm Festival',
+          '<a href="https://www.myfrenchfilmfestival.com/content/les-mysterieuses-aventures-de-claude-conseil-fr" target="_blank" rel="noopener noreferrer">here on My French Film Festival</a>. with de, en, ar, es, it, ja, zh, pt Subtitles !',
         Photos: 'Photos',
         'Photos tournage': 'Behind the Scenes',
         'Sélections et Prix': 'Selections & Awards',
@@ -55,7 +55,8 @@ i18n.use(initReactI18next).init({
         Générique: 'Générique',
         Photos: 'Photos',
         movieAvailable: 'Le film est disponible {{ link }}.',
-        linkText: 'ici sur France TV',
+        linkText:
+          '<a href="https://www.france.tv/films/courts-metrages/5645988-les-mysterieuses-aventures-de-claude-conseil.html" target="_blank" rel="noopener noreferrer">ici sur France TV</a>',
         'Photos tournage': 'Photos tournage',
         'Sélections et Prix': 'Sélections et Prix',
         Critiques: 'Critiques',
@@ -81,8 +82,8 @@ i18n.use(initReactI18next).init({
           'Prêt.e.s à voir un film de 24 minutes, dans le calme, seul.e ou avec des amis ?',
         'Les Mystérieuses Aventures de Claude Conseil':
           'Les Mystérieuses Aventures de Claude Conseil',
-        Suivant: 'Next',
-        Erreur: 'Error',
+        Suivant: 'Suivant',
+        Erreur: 'Erreur',
         oui: 'oui',
         non: 'non',
       },
