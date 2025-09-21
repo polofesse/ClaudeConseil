@@ -106,11 +106,11 @@ export default function Prix_et_selections({ onClose }) {
         <WindowDropDowns items={dropDownData} onClickItem={onClickOptionItem} />
       </section>
       <StyledContent wordWrap={wordWrap}>
-        <StyledH1
+        {/* <StyledH1
           dangerouslySetInnerHTML={{
             __html: t('movieAvailable', { link: t('linkText') }),
           }}
-        />
+        /> */}
         {renderText(firstText)}
         <StyledImage src="https://i.imgur.com/rUs7GBA.jpg" alt="Illustration" />
         {renderText(secondText)}
