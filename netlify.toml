@@ -1,2 +1,35 @@
+# Configuration Netlify — claudeconseil.fr
+#
+# La commande de build reste celle definie dans l'interface Netlify
+# (Site settings > Build & deploy). Elle n'est volontairement PAS
+# redefinie ici : netlify.toml ecraserait le reglage de l'interface et
+# un ecart ferait echouer le deploiement.
+#
+# Le dossier build/ n'est plus suivi par git : Netlify le regenere a
+# chaque deploiement depuis les sources.
+
 [build]
-  publish = "build"  # Chemin vers votre dossier de build
+  publish = "build"
+
+# --- En-tetes de securite -------------------------------------------------
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    # Empeche l'affichage du site dans une iframe tierce (clickjacking)
+    X-Frame-Options = "SAMEORIGIN"
+    # Interdit au navigateur de deviner le type MIME d'un fichier
+    X-Content-Type-Options = "nosniff"
+    # Ne transmet l'URL complete qu'aux pages du meme site
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    # Le site n'a besoin d'aucun de ces capteurs
+    Permissions-Policy = "camera=(), microphone=(), geolocation=(), payment=()"
+
+# --- Cache ----------------------------------------------------------------
+
+# Les fichiers de /static/ portent un hash dans leur nom : ils peuvent
+# etre mis en cache indefiniment, un nouveau build change le nom.
+[[headers]]
+  for = "/static/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
